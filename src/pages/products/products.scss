@@ -1,0 +1,68 @@
+.products {
+	width: calc(100vw - 220px);
+	position: absolute;
+	left: 220px;
+	top: 50px;
+
+	.wrapper {
+		padding: 20px;
+		padding-top: 0;
+
+		.changeOfStoke {
+			margin-bottom: 12px;
+
+			h3 {
+				margin-bottom: 10px;
+				font-weight: 600;
+				font-size: 20px;
+			}
+
+			.items {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 15px;
+			}
+		}
+
+		.header {
+			display: flex;
+			justify-content: space-between;
+			margin: 20px 0;
+			margin-top: 40px;
+
+			.title {
+				color: #333;
+				font-size: 18px;
+				font-weight: 700;
+			}
+			.headerButton {
+				display: flex;
+				gap: 20px;
+			}
+		}
+
+		.productCell {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			img {
+				width: 35px;
+				height: 35px;
+				object-fit: cover;
+				border-radius: 50%;
+			}
+		}
+		.actionCell {
+			.editIcon {
+				color: green;
+				cursor: pointer;
+				margin-right: 10px;
+			}
+			.deleteIcon {
+				color: red;
+				cursor: pointer;
+			}
+		}
+	}
+}

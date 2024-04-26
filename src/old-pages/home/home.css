@@ -1,0 +1,11 @@
+.home {
+	width: calc(100vw - 220px);
+	position: absolute;
+	left: 220px;
+	top: 50px;
+}
+
+.homeWidgets {
+	display: flex;
+	margin: 20px;
+}

@@ -1,0 +1,45 @@
+.expenses {
+	width: calc(100vw - 220px);
+	position: absolute;
+	left: 220px;
+	top: 50px;
+
+	.wrapper {
+		padding: 20px;
+
+		.header {
+			margin: 20px 0;
+
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.title {
+				color: #333;
+				font-size: 18px;
+				font-weight: 18px;
+			}
+		}
+		.headerButton {
+			display: flex;
+			gap: 20px;
+		}
+	}
+}
+
+.newTransactionForm {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	.formGroup {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: 10px;
+
+		input {
+			padding: 10px;
+		}
+	}
+}

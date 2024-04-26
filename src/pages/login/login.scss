@@ -1,0 +1,102 @@
+.login {
+	width: 100vw;
+	height: 100vh;
+
+	background: linear-gradient(to right, #4286f4, #373b44);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.wrapper {
+		background-color: #fff;
+		color: #333;
+		border-radius: 5px;
+		padding: 30px 30px 100px 30px;
+
+		.header {
+			margin-bottom: 30px;
+
+			.title {
+				font-size: 30px;
+				font-weight: 600;
+				color: #333;
+				text-align: center;
+			}
+		}
+
+		.form {
+			.formGroup {
+				margin: 20px 0;
+				display: flex;
+				flex-direction: column;
+				text-align: left;
+				gap: 2px;
+
+				.label {
+					font-size: 24px;
+				}
+
+				div {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+
+					padding: 10px 20px;
+					width: 300px;
+					border: none;
+					border-bottom: 1px solid #ccc;
+
+					.inputIcon {
+						color: gray;
+					}
+
+					.input {
+						width: 100%;
+						border: none;
+						outline: none;
+					}
+				}
+			}
+
+			.buttonContainer {
+				margin-top: 25px;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				.btn {
+					width: 150px;
+					height: 40px;
+					display: inline-block;
+					border: none;
+					outline: none;
+					background: linear-gradient(to right, #4286f4, #373b44);
+					color: #fff;
+					border-radius: 8px;
+					cursor: pointer;
+					font-size: 17px;
+					font-weight: 500;
+					transition: all 0.3s ease;
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 2px;
+
+					&:hover {
+						background: linear-gradient(to right, #373b44, #4286f4);
+					}
+				}
+
+				.loading {
+					font-size: 2px;
+					width: 2px;
+					height: 2px;
+					color: #fff;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,94 @@
+.clientInfo {
+	width: calc(100vw - 220px);
+	position: absolute;
+	left: 220px;
+	top: 50px;
+
+	.wrapper {
+		padding: 20px;
+
+		.title {
+			font-size: 24px;
+		}
+	}
+}
+
+.newTransactionForm {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	.formGroup {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: 10px;
+
+		input {
+			padding: 10px;
+		}
+	}
+}
+
+.head {
+	display: flex;
+	gap: 15px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+	font-size: 17px;
+	font-weight: 500;
+	span {
+		width: 150px;
+	}
+}
+
+.calc .b {
+	display: flex;
+	gap: 15px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+	padding: 5px;
+	font-size: 17px;
+	font-weight: 500;
+
+	span {
+		width: 150px;
+	}
+
+	&.success {
+		background-color: rgb(221, 247, 181);
+	}
+
+	&.danger {
+		background-color: rgb(245, 179, 179);
+	}
+}
+
+.noT {
+	text-align: center;
+	margin: 20px 0;
+	color: gray;
+	font-size: 28px;
+}
+
+.headerButton {
+	display: flex;
+	align-items: center;
+
+	@media print {
+		display: none;
+	}
+}
+
+.actionCell {
+	@media print {
+		display: none;
+	}
+}
+
+.modalHead {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}

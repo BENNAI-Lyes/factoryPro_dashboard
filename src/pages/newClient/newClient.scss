@@ -1,0 +1,42 @@
+.newClient {
+	width: calc(100vw - 220px);
+	position: absolute;
+	left: 220px;
+	top: 50px;
+
+	h2 {
+		color: #333;
+		font-size: 18px;
+		margin-bottom: 25px;
+		font-weight: 800;
+	}
+	.form {
+		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 25px;
+		.group {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			width: 350px;
+			input {
+				padding: 15px;
+				border-radius: 5px;
+				border: 1px solid #ccc;
+			}
+
+			.add {
+				padding: 10px 0;
+				background-color: darkblue;
+				color: #fff;
+				font-weight: 500;
+				font-size: 18px;
+				border: none;
+				cursor: pointer;
+				border-radius: 5px;
+				margin-top: 30px;
+			}
+		}
+	}
+}

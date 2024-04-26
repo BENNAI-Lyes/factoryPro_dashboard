@@ -1,0 +1,42 @@
+:root {
+	--color-primary: #3640ff;
+	--color-primary-dark: #3039e5;
+	--color-primary-light: #4a53ff;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+.container {
+	width: 100vw;
+	position: relative;
+	display: flex;
+	margin-top: 15px;
+}
+
+.link {
+	text-decoration: none;
+	color: inherit;
+}
+
+//scrollbar
+/* width */
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #d8d8d8;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #ccc;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #bfbfbf;
+}
