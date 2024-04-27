@@ -108,7 +108,7 @@ export default function Sidebar() {
 				<div className="sidebarMenu">
 					<h3 className="sidebarTitle">Printing</h3>
 					<ul className="sidebarList">
-						<Link to="/new-order" className="link">
+						<Link to="/new-order-products" className="link">
 							<li className="sidebarListItem">
 								<CreateOutlined className="sidebarIcon" />
 								New Order

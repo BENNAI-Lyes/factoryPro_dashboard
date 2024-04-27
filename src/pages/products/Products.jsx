@@ -202,7 +202,7 @@ const Products = () => {
 							)}
 							content={() => productsRef.current}
 						/>
-						<Link to="/newProduct">
+						<Link to="/new-product">
 							<Button
 								variant="contained"
 								color="primary"

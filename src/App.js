@@ -17,13 +17,25 @@ import Login from './pages/login/Login';
 
 import Home from './pages/home/Home';
 import Products from './pages/products/Products';
+import Product from './pages/product/Product';
+import NewProduct from './pages/newProduct/NewProduct';
 import ReturnProducts from './pages/returnProducts/ReturnProducts';
 import Customers from './pages/clients/Clients';
+import NewCustomer from './pages/newClient/NewClient';
+import Customer from './pages/client/Client';
+import CustomerTransactions from './pages/clientInfo/ClientInfo';
 import Workers from './pages/workers/Workers';
+import NewWorker from './pages/newWorker/NewWorker';
+import Worker from './pages/worker/Worker';
+import WorkerAccount from './pages/workerInfo/WorkerInfo';
 import Orders from './pages/bills/Bills';
+import NewOrder from './pages/newBill/NewBill';
+import Order from './pages/bill/Bill';
+import UpdateOrder from './pages/updatBill/updateBill';
 import Expenses from './pages/expenses/Expenses';
 import Invoices from './pages/invoices/Invoices';
-import NewOrder from './pages/commande/Commande';
+import Invoice from './pages/invoice/Invoice';
+import NewOrderProducts from './pages/commande/Commande';
 import PaymentTicket from './pages/vers/Vers';
 
 function App() {
@@ -43,51 +55,76 @@ function App() {
 								<Route exact path="/">
 									<Home />
 								</Route>
+
 								<Route path="/products">
 									<Products />
+								</Route>
+								<Route path="/product/:id">
+									<Product />
+								</Route>
+								<Route path="/new-product">
+									<NewProduct />
 								</Route>
 								<Route path="/returned-products">
 									<ReturnProducts />
 								</Route>
+
 								<Route path="/customers">
 									<Customers />
 								</Route>
+								<Route path="/customer/:id">
+									<Customer />
+								</Route>
+								<Route path="/new-customer">
+									<NewCustomer />
+								</Route>
+								<Route path="/customer-transactions/:id">
+									<CustomerTransactions />
+								</Route>
+
 								<Route path="/workers">
 									<Workers />
 								</Route>
+								<Route path="/new-worker">
+									<NewWorker />
+								</Route>
+								<Route path="/worker/:id">
+									<Worker />
+								</Route>
+								<Route path="/worker-account/:id">
+									<WorkerAccount />
+								</Route>
+
 								<Route path="/orders">
 									<Orders />
-								</Route>
-								<Route path="/expenses">
-									<Expenses />
-								</Route>
-								<Route path="/invoices">
-									<Invoices />
 								</Route>
 								<Route path="/new-order">
 									<NewOrder />
 								</Route>
+								<Route path="/order/:id">
+									<Order />
+								</Route>
+								<Route path="/order-update/:id">
+									<UpdateOrder />
+								</Route>
+
+								<Route path="/expenses">
+									<Expenses />
+								</Route>
+
+								<Route path="/invoices">
+									<Invoices />
+								</Route>
+								<Route path="/invoice/:id">
+									<Invoice />
+								</Route>
+
+								<Route path="/new-order-products">
+									<NewOrderProducts />
+								</Route>
 								<Route path="/payment-ticket">
 									<PaymentTicket />
 								</Route>
-
-								{/* old routes
-								<Route path="/users">
-									<UserList />
-								</Route>
-								<Route path="/user/:userId">
-									<User />
-								</Route>
-								<Route path="/newUser">
-									<NewUser />
-								</Route>
-
-								<Route path="/product/:productId">
-									<Products />
-								</Route>
-								<Route path="/newproduct">
-									<NewProduct />
-								</Route> */}
 							</Switch>
 						</div>
 					</>
