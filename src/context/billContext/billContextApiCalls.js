@@ -104,7 +104,7 @@ export const updateBill = async (dispatch, bill) => {
 		dispatch(UPDATE_BILL_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(UPDATE_BILL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error.response.data.message || 'Something went wrong');
 	}
 };
 

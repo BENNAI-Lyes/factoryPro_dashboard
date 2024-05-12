@@ -9,7 +9,6 @@ import { ProductsContextProvider } from './context/productContext/productContext
 import { InvoicesContextProvider } from './context/invoiceContext/invoiceContext';
 import { ClientsContextProvider } from './context/clientContext/clientContext';
 import { WorkersContextProvider } from './context/workerContext/workerContext';
-import { ReturnProductsContextProvider } from './context/returnProductContext/returnProductContext';
 import { TransactionsContextProvider } from './context/transactionContext/transactionContext';
 import { ExpensesContextProvider } from './context/expenseContext/expenseContext';
 import { PayrollsContextProvider } from './context/payrollContext/payrollContext';
@@ -22,15 +21,13 @@ ReactDOM.render(
 					<InvoicesContextProvider>
 						<ClientsContextProvider>
 							<WorkersContextProvider>
-								<ReturnProductsContextProvider>
-									<TransactionsContextProvider>
-										<ExpensesContextProvider>
-											<PayrollsContextProvider>
-												<App />
-											</PayrollsContextProvider>
-										</ExpensesContextProvider>
-									</TransactionsContextProvider>
-								</ReturnProductsContextProvider>
+								<TransactionsContextProvider>
+									<ExpensesContextProvider>
+										<PayrollsContextProvider>
+											<App />
+										</PayrollsContextProvider>
+									</ExpensesContextProvider>
+								</TransactionsContextProvider>
 							</WorkersContextProvider>
 						</ClientsContextProvider>
 					</InvoicesContextProvider>

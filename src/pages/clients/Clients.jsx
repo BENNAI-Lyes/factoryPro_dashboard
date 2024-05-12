@@ -1,15 +1,13 @@
 import './clients.scss';
 import { DataGrid } from '@material-ui/data-grid';
-import { Edit, DeleteOutline, Add } from '@material-ui/icons';
+import { Add, PrintOutlined } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 import { ClientsContext } from '../../context/clientContext/clientContext';
-import {
-	deleteClient,
-	getClients,
-} from '../../context/clientContext/clientApiCalls';
+import { getClients } from '../../context/clientContext/clientApiCalls';
 import ReactToPrint from 'react-to-print';
+import ActionCell from './components/actionCell/ActionCell';
 
 const Clients = () => {
 	const { dispatch, clients, isFetching } = useContext(ClientsContext);
@@ -24,7 +22,7 @@ const Clients = () => {
 		{
 			field: 'détails',
 			headerName: 'Transactions',
-			width: 130,
+			flex: 1,
 			renderCell: (params) => {
 				return (
 					<div className="actionCell">
@@ -42,50 +40,34 @@ const Clients = () => {
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 230,
+			flex: 1,
 		},
 		{
 			field: 'address',
 			headerName: 'Address',
-			width: 230,
+			flex: 1,
 		},
 		{
 			field: 'phone',
 			headerName: 'Phone Number',
-			width: 240,
+			flex: 1,
 		},
 		{
 			field: 'credit',
 			headerName: 'Total Debt',
-			width: 230,
+			flex: 1,
 			renderCell: (params) => {
 				return params.row.credit + ',00 DA';
 			},
 		},
-
 		{
 			field: 'action',
 			headerName: 'Action',
-			width: 70,
+			flex: 1,
+			align: 'center',
+			headerAlign: 'center',
 			renderCell: (params) => {
-				return (
-					<div className="actionCell">
-						<Link
-							to={{
-								pathname: `/customer/${params.row._id}`,
-								client: params.row,
-							}}>
-							<Edit className="editIcon" />
-						</Link>
-
-						<DeleteOutline
-							className="deleteIcon"
-							onClick={() => {
-								deleteClient(dispatch, params.row._id);
-							}}
-						/>
-					</div>
-				);
+				return <ActionCell params={params} />;
 			},
 		},
 	];
@@ -93,12 +75,17 @@ const Clients = () => {
 		<div className="clients">
 			<div className="wrapper">
 				<div className="header">
-					<h3 className="title">Clients</h3>
+					<h3 className="title">Customers list</h3>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
-								<Button variant="contained" size="small">
-									print
+								<Button
+									variant="outlined"
+									size="small"
+									color="primary"
+									startIcon={<PrintOutlined />}>
+									{' '}
+									Print{' '}
 								</Button>
 							)}
 							content={() => clientRef.current}
@@ -106,11 +93,11 @@ const Clients = () => {
 						<Link to="/new-customer">
 							<Button
 								variant="contained"
-								color="primary"
 								startIcon={<Add />}
-								className="button"
-								size="small">
-								new client
+								size="small"
+								color="primary">
+								{' '}
+								New client{' '}
 							</Button>
 						</Link>
 					</div>

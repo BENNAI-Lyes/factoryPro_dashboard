@@ -35,6 +35,7 @@ import UpdateOrder from './pages/updatBill/updateBill';
 import Expenses from './pages/expenses/Expenses';
 import Invoices from './pages/invoices/Invoices';
 import Invoice from './pages/invoice/Invoice';
+import NewInvoice from './pages/newInvoice/NewInvoice';
 import NewOrderProducts from './pages/commande/Commande';
 import PaymentTicket from './pages/vers/Vers';
 
@@ -114,6 +115,9 @@ function App() {
 
 								<Route path="/invoices">
 									<Invoices />
+								</Route>
+								<Route path="/new-invoice">
+									<NewInvoice />
 								</Route>
 								<Route path="/invoice/:id">
 									<Invoice />

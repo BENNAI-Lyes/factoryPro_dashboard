@@ -8,8 +8,8 @@ import { AuthContext } from '../../context/authContext/authContext';
 import { login } from '../../context/authContext/authContextApiCalls';
 
 const Login = () => {
-	const [email, setEmail] = useState('garouj852@gmail.com');
-	const [password, setPassword] = useState('123456hakiM');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
 	const { dispatch, isFetching } = useContext(AuthContext);
 
@@ -35,7 +35,7 @@ const Login = () => {
 								name="email"
 								id="email"
 								className="input"
-								placeholder="Enter Your Email"
+								placeholder="admin@gmail.com"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
@@ -50,7 +50,7 @@ const Login = () => {
 								name="password"
 								id="password"
 								className="input"
-								placeholder="Enter Your Password"
+								placeholder="admin123"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>

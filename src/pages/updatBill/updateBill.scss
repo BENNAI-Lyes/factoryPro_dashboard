@@ -6,32 +6,52 @@
 
 	.wrapper {
 		padding: 20px;
-		.wrapper {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-			padding: 1rem;
-		}
 
 		.top {
 			display: flex;
 			flex-direction: column;
-			gap: 1rem;
+			gap: 20px;
 
-			.mainTitle {
-				margin-bottom: 1rem;
-				color: #333;
-				font-size: 18px !important;
+			&--header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				&__title {
+					margin-bottom: 10px;
+					color: #333;
+					font-size: 24px;
+					font-weight: 600;
+				}
+
+				&__buttons {
+					display: flex;
+					gap: 5px;
+				}
 			}
 
-			.items {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
+			.form {
+				margin-bottom: 50px;
 
-				.item {
-					display: flex;
-					gap: 1rem;
+				.items {
+					display: grid;
+					grid-template-columns: 1fr 1fr 1fr;
+
+					margin-bottom: 20px;
+					gap: 30px;
+
+					.item {
+						display: flex;
+						flex-direction: column;
+						align-self: flex-end;
+						gap: 5px;
+
+						&--label {
+							font-weight: 500;
+							font-size: 15px;
+							color: rgb(62, 60, 60);
+						}
+					}
 				}
 			}
 		}
@@ -60,63 +80,41 @@
 	}
 }
 
-.bottom {
+.ticket {
+	position: relative;
+	border-radius: 5px;
+	border: 1px solid gray;
+
 	color: #000;
 	font-weight: 600;
-	min-height: 95vh;
-	position: relative;
+	--webkit-print-color-adjust: exact;
 
-	.bottomContent {
-		margin: 20px;
-		padding: 20px;
-		border: 3px solid #000;
-		border-radius: 5px;
-		min-height: 95vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 800px;
+
+	@media print {
+		width: 220mm !important;
+		height: 284mm !important;
+	}
+}
+
+.ticket--header {
+	&__info {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		gap: 5px;
+		padding: 10px;
 
-		--webkit-print-color-adjust: exact;
-	}
-	.backgroundImg {
-		height: 100%;
-		width: 100%;
-		position: absolute;
-		margin: auto;
-
-		img {
-			width: 100%;
-			height: 100%;
-			filter: opacity(20%);
-		}
-	}
-
-	.bgImg {
-		height: 100%;
-		width: 100%;
-		position: absolute;
-		margin: auto;
-
-		img {
-			width: 100%;
-			height: 100%;
-			filter: blur(10px) opacity(40%);
-		}
-	}
-
-	.info {
-		.topInfo {
-			margin-bottom: 5px;
+		&--top {
 			display: flex;
+			align-items: center;
 			justify-content: space-between;
 
 			.logo {
-				width: 200px;
-				margin-left: 40px;
-
 				img {
-					width: 50%;
-					margin-left: 40px;
+					width: 80px;
 				}
 				p {
 					font-weight: 700;
@@ -124,21 +122,21 @@
 				}
 			}
 
-			.bonTitle {
+			.title {
 				h2 {
-					margin-top: 20px;
-					font-size: 28px !important;
-					font-weight: 900;
+					font-size: 30px !important;
+					font-weight: 700;
 				}
 				p {
 					text-align: center;
 				}
 			}
-			.bonDate {
+			.date {
 				text-transform: capitalize;
 			}
 		}
-		.bottomInfo {
+
+		&--bottom {
 			display: flex;
 			justify-content: space-between;
 			.left,
@@ -152,6 +150,10 @@
 			.item {
 				margin-bottom: 2px;
 				padding: 0 2px;
+				color: #000;
+				border: 1px solid #333;
+				border-radius: 5px;
+				padding: 5px;
 
 				.key {
 					margin-right: 5px;
@@ -162,15 +164,11 @@
 					font-size: 17px;
 				}
 			}
-			.left {
-			}
-			.right {
-			}
 		}
 	}
-	.table {
-		margin-top: 6px;
 
+	&__table {
+		margin: 10px;
 		.tableCell {
 			padding: 0 !important;
 			margin: 3px 0 !important;
@@ -180,16 +178,26 @@
 			&.last {
 				.content {
 					display: flex;
+					align-items: center;
 					justify-content: space-around;
 				}
 
 				.delete {
-					font-size: 20px;
 					border: none;
-					background: none;
-					color: red;
+					outline: none;
+					color: #fff;
+					background-color: #f381a7;
 					cursor: pointer;
 					z-index: 10;
+					border-radius: 50%;
+					padding: 1px;
+					margin: 1px;
+					cursor: pointer;
+					transition: all 0.4s ease;
+
+					&:hover {
+						background-color: #e2779b;
+					}
 
 					@media print {
 						display: none;
@@ -199,66 +207,86 @@
 		}
 	}
 
-	.productR {
-		margin-top: 20px;
+	.ticket--header__return {
+		margin-top: 30px;
+		margin: 10px;
+		// display: none;
+
 		h3 {
-			margin-bottom: 10px;
+			font-size: 18px;
+			font-weight: 600;
+			margin-bottom: 5px;
 		}
-
-		.prs {
+		&__products {
 			display: flex;
-			flex-wrap: wrap;
-			gap: 15px;
+			flex-direction: column;
+			gap: 5px;
+			font-size: 15px;
 
-			.pr {
-				border-left: 2px solid gray;
-				border-right: 2px solid gray;
-				padding: 0 3px;
+			&--product {
 				display: flex;
 				align-items: center;
-				gap: 5px;
-				.prQ {
-					font-size: 18px;
+				gap: 10px;
+
+				.dot {
+					width: 5px;
+					height: 5px;
+					border-radius: 50%;
+					background-color: #666;
 				}
-				.prName {
+				.pr {
+					display: grid;
+					width: 70%;
+					grid-template-columns: 1fr 100px 120px;
+
+					.nameValue {
+						display: flex;
+						align-items: center;
+						gap: 4px;
+
+						.value {
+							color: #222;
+							font-weight: 400;
+							font-size: 14px;
+						}
+					}
 				}
 			}
 		}
 	}
-	.calc {
-		margin-top: 6px;
+}
+
+.ticket--footer {
+	&__stats {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
 
-		.calcLeft,
-		.calcRight {
-			border: 1px solid #000;
+		&--left,
+		&--right {
 			margin: 10px 0;
 			padding: 10px;
 			border-radius: 5px;
-		}
 
-		.calcItem {
-			margin-bottom: 2px;
-			padding: 0 2px;
-			.key {
-				margin-right: 5px;
+			.calcItem {
+				margin-bottom: 2px;
+				padding: 0 2px;
+				color: #000;
+				border: 1px solid #333;
+				border-radius: 5px;
+				padding: 5px;
+				.key {
+					margin-right: 5px;
+				}
 			}
 		}
 	}
 
-	.footer {
-		margin-top: 10px;
+	&__cache {
+		margin-bottom: 50px;
+		padding: 10px;
 	}
-
-	.dIcon {
-		color: red !important;
-		z-index: 99999999999999999999999999;
-		cursor: pointer;
-
-		@media print {
-			display: none;
-		}
+	&__brand {
+		margin: 10px;
 	}
 }
