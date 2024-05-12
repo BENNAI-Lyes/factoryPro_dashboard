@@ -20,6 +20,29 @@
 				font-weight: 18px;
 			}
 		}
+		.action--icons {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			.icon {
+				border-radius: 50%;
+				font-size: 22px;
+				padding: 2px;
+				cursor: pointer;
+				transition: all 0.4s ease;
+
+				&:hover {
+					transform: scale(1.2);
+				}
+			}
+
+			.delete {
+				background-color: lightcoral;
+				color: #fff;
+			}
+		}
+
 		.headerButton {
 			display: flex;
 			gap: 20px;
@@ -35,11 +58,25 @@
 	.formGroup {
 		display: flex;
 		flex-direction: column;
-		flex-wrap: wrap;
 		gap: 10px;
 
-		input {
-			padding: 10px;
+		.label {
+			font-size: 14px;
+			color: #333;
+			font-weight: 500;
+		}
+		.textarea {
+			height: 100px;
+			border-radius: 5px;
+			outline: none;
+			border: 1px solid lightgray;
+			padding: 15px;
+		}
+		.input {
+			border-radius: 5px;
+			outline: none;
+			border: 1px solid lightgray;
+			padding: 15px;
 		}
 	}
 }

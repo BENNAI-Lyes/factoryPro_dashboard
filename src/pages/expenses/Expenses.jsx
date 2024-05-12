@@ -3,7 +3,12 @@ import './expenses.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { DataGrid } from '@material-ui/data-grid';
-import { Add, DeleteOutline, PrintOutlined } from '@material-ui/icons';
+import {
+	Add,
+	AddOutlined,
+	DeleteOutline,
+	PrintOutlined,
+} from '@material-ui/icons';
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
@@ -39,9 +44,9 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
-		width: '55%',
+		width: '45%',
 		backgroundColor: theme.palette.background.paper,
-		border: '1px solid blue',
+		border: '1px solid #ccc',
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 		borderRadius: '5px',
@@ -88,7 +93,7 @@ const Expenses = () => {
 
 		{
 			field: 'action',
-			headerName: 'Action',
+			headerName: 'Actions',
 			flex: 1,
 			align: 'center',
 			headerAlign: 'center',
@@ -99,7 +104,7 @@ const Expenses = () => {
 							onClick={() => {
 								deleteExpense(dispatch, params.row._id);
 							}}
-							className="icon edit"
+							className="icon delete"
 						/>
 					</div>
 				);
@@ -109,7 +114,6 @@ const Expenses = () => {
 
 	//modal
 	const classes = useStyles();
-	// getModalStyle is not a pure function, we roll the style only on the first render
 	const [modalStyle] = useState(getModalStyle);
 	const [open, setOpen] = useState(false);
 
@@ -155,10 +159,7 @@ const Expenses = () => {
 		<div className="expenses">
 			<div className="wrapper">
 				<div className="header">
-					<h3 className="title" style={{ textTransform: 'capitalize' }}>
-						{' '}
-						Expenses list{' '}
-					</h3>
+					<h3 className="title"> Expenses list </h3>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
@@ -193,8 +194,6 @@ const Expenses = () => {
 							rows={expenses}
 							columns={columns}
 							pageSize={10}
-							checkboxSelection
-							disableSelectionOnClick
 							getRowId={(r) => r._id}
 						/>
 					</div>
@@ -212,29 +211,39 @@ const Expenses = () => {
 					<div style={modalStyle} className={classes.paper}>
 						<h2
 							id="simple-modal-title"
-							style={{ marginBottom: '10px', fontSize: '18px', color: '#333' }}>
-							New Expence:
+							style={{
+								marginBottom: '12px',
+								fontSize: '18px',
+								color: '#333',
+								fontWeight: 600,
+							}}>
+							New Expense
 						</h2>
 						<div id="simple-modal-description">
 							<form className="newTransactionForm" onSubmit={handelSubmit}>
 								<div className="formGroup">
-									<label htmlFor="name">Description:</label>
+									<label htmlFor="name" className="label">
+										Description
+									</label>
 									<textarea
 										type="string"
 										name="name"
 										id="name"
-										placeholder="description "
+										placeholder="Expense for a ... "
 										value={name}
 										onChange={(e) => setName(e.target.value)}
-										style={{ height: '100px', padding: '10px' }}></textarea>
+										className="textarea"></textarea>
 								</div>
 								<div className="formGroup">
-									<label htmlFor="price">Amount:</label>
+									<label htmlFor="price" className="label">
+										Amount:
+									</label>
 									<input
 										type="number"
 										name="price"
 										id="price"
 										placeholder="Amount"
+										className="input"
 										value={price}
 										onChange={(e) => setPrice(e.target.value)}
 									/>
@@ -245,8 +254,9 @@ const Expenses = () => {
 										type="submit"
 										color="primary"
 										variant="contained"
-										size="small">
-										send
+										size="large"
+										startIcon={<AddOutlined />}>
+										add
 									</Button>
 								</div>
 							</form>
