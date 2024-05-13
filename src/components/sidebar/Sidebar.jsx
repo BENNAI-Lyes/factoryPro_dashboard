@@ -19,8 +19,6 @@ import './sidebar.scss';
 export default function Sidebar() {
 	const href = useLocation().pathname;
 
-	console.log('location is:', href);
-
 	return (
 		<div className="sidebar">
 			<div className="sidebarWrapper">

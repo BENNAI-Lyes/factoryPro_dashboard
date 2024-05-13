@@ -1,83 +1,116 @@
-import "./newWorker.scss";
-import { useContext, useState } from "react";
-import { WorkersContext } from "../../context/workerContext/workerContext";
-import { addWorker } from "../../context/workerContext/workerApiCalls";
+import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import './newWorker.scss';
+import { WorkersContext } from '../../context/workerContext/workerContext';
+import { addWorker } from '../../context/workerContext/workerApiCalls';
+import { Button } from '@material-ui/core';
+import { AddOutlined } from '@material-ui/icons';
+import {
+	ADD_WORKER_FAILURE,
+	ADD_WORKER_START,
+	ADD_WORKER_SUCCESS,
+} from '../../context/workerContext/workerContextActions';
+import { axiosI } from '../../config';
+import { toast } from 'react-toastify';
 
 export default function NewWorker() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
+	const history = useHistory();
 
-  const { dispatch } = useContext(WorkersContext);
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [address, setAddress] = useState('');
+	const [phone, setPhone] = useState('');
 
-  const handelSubmit = (e) => {
-    e.preventDefault();
-    addWorker(dispatch, { name, email, address, phone });
+	const { dispatch } = useContext(WorkersContext);
 
-    setName("");
-    setEmail("");
-    setAddress("");
-    setPhone("");
-  };
+	const handelSubmit = async (e) => {
+		e.preventDefault();
+		dispatch(ADD_WORKER_START());
+		try {
+			const res = await axiosI.post(
+				'worker',
+				{ name, email, address, phone },
+				{
+					headers: {
+						token:
+							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+					},
+				}
+			);
+			dispatch(ADD_WORKER_SUCCESS(res.data));
+			toast.success('Worker Added successfully.');
+			setName('');
+			setEmail('');
+			setAddress('');
+			setPhone('');
 
-  return (
-    <div className="newWorker">
-      <h2>Nouveau Employée</h2>
-      <form className="form" onSubmit={handelSubmit}>
-        <div className="group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            placeholder="Entre Name"
-            className="input"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            placeholder="Entre Email"
-            className="input"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+			history.push('/workers');
+		} catch (error) {
+			toast.error(error.response.data.message);
+			dispatch(ADD_WORKER_FAILURE(error));
+		}
+	};
 
-        <div className="group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            className="input"
-            placeholder="Entre address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
+	return (
+		<div className="newWorker">
+			<h2>New Worker</h2>
+			<form className="form">
+				<div className="group">
+					<label htmlFor="name">Name</label>
+					<input
+						type="text"
+						placeholder="Entre Name"
+						className="input"
+						id="name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+				</div>
+				<div className="group">
+					<label htmlFor="email">Email</label>
+					<input
+						type="email"
+						placeholder="Entre Email"
+						className="input"
+						id="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+				</div>
 
-        <div className="group">
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            type="string"
-            id="phone"
-            className="input"
-            placeholder="Entre phone number "
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
+				<div className="group">
+					<label htmlFor="address">Address</label>
+					<input
+						type="text"
+						id="address"
+						className="input"
+						placeholder="Entre address"
+						value={address}
+						onChange={(e) => setAddress(e.target.value)}
+					/>
+				</div>
 
-        <div className="group">
-          <button className="add" type="submit">
-            Add
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+				<div className="group">
+					<label htmlFor="phone">Phone Number</label>
+					<input
+						type="string"
+						id="phone"
+						className="input"
+						placeholder="Entre phone number "
+						value={phone}
+						onChange={(e) => setPhone(e.target.value)}
+					/>
+				</div>
+			</form>
+			<Button
+				variant="contained"
+				size="small"
+				color="primary"
+				startIcon={<AddOutlined />}
+				onClick={handelSubmit}>
+				Add new worker
+			</Button>
+		</div>
+	);
 }

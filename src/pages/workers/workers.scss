@@ -6,16 +6,18 @@
 
 	.wrapper {
 		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
 
 		.header {
 			display: flex;
 			justify-content: space-between;
-			margin: 20px 0;
 
 			.title {
+				font-size: 24px;
+				font-weight: 600;
 				color: #333;
-				font-size: 18px;
-				font-weight: 800;
 			}
 			.headerButton {
 				display: flex;
@@ -23,28 +25,47 @@
 			}
 		}
 
-		.productCell {
-			display: flex;
-			align-items: center;
-			gap: 10px;
+		.table {
+			@media print {
+				width: 210mm;
+				height: 297mm;
+				size: A4;
+			}
 
-			img {
-				width: 35px;
-				height: 35px;
-				object-fit: cover;
-				border-radius: 50%;
+			.action--icons {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				.icon {
+					border-radius: 50%;
+					font-size: 22px;
+					padding: 2px;
+					cursor: pointer;
+					transition: all 0.4s ease;
+
+					&:hover {
+						transform: scale(1.2);
+					}
+				}
+
+				.edit {
+					background-color: #9db3bf;
+					color: #fff;
+				}
+				.delete {
+					background-color: lightcoral;
+					color: #fff;
+				}
+
+				@media print {
+					display: none !important;
+				}
 			}
 		}
-		.actionCell {
-			.editIcon {
-				color: green;
-				cursor: pointer;
-				margin-right: 10px;
-			}
-			.deleteIcon {
-				color: red;
-				cursor: pointer;
-			}
+		.progressCenter {
+			margin: auto;
+			padding-top: 30px;
 		}
 	}
 }

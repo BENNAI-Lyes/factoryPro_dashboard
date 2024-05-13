@@ -2,10 +2,17 @@ import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { DataGrid } from '@material-ui/data-grid';
-import { DeleteOutline, Add } from '@material-ui/icons';
+import {
+	DeleteOutline,
+	Add,
+	PrintOutlined,
+	AccountBalanceOutlined,
+	AddOutlined,
+} from '@material-ui/icons';
 import { useLocation } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
+import ReactToPrint from 'react-to-print';
 
 import './workerInfo.scss';
 import { PayrollsContext } from '../../context/payrollContext/payrollContext';
@@ -22,7 +29,7 @@ import {
 	DELETE_ALL_PAYROLL_SUCCESS,
 } from '../../context/payrollContext/payrollContextActions';
 import { axiosI } from '../../config';
-import ReactToPrint from 'react-to-print';
+import { getDate } from '../../helpers/getDate';
 
 //MODAL STYLES
 function getModalStyle() {
@@ -38,7 +45,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
-		width: '55%',
+		width: '45%',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
@@ -50,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 const WorkerInfo = () => {
 	const workerRef = useRef();
 	const worker = useLocation().worker;
+
 	const { dispatch, payrolls, isFetching } = useContext(PayrollsContext);
 
 	const [desc, setDesc] = useState('');
@@ -72,16 +80,16 @@ const WorkerInfo = () => {
 	}, [dispatch, worker._id]);
 
 	const columns = [
-		{ field: 'date', headerName: 'Date', width: 190 },
+		{ field: 'date', headerName: 'Date', flex: 1 },
 		{
 			field: 'desc',
 			headerName: 'Description',
-			width: 300,
+			flex: 1,
 		},
 		{
 			field: 'total',
 			headerName: 'Total',
-			width: 160,
+			flex: 1,
 			renderCell: (params) => {
 				return params.row.total + ',00 DA';
 			},
@@ -89,7 +97,7 @@ const WorkerInfo = () => {
 		{
 			field: 'payment',
 			headerName: 'Payment',
-			width: 160,
+			flex: 1,
 			renderCell: (params) => {
 				return params.row.payment + ',00 DA';
 			},
@@ -97,7 +105,7 @@ const WorkerInfo = () => {
 		{
 			field: 'credit',
 			headerName: 'Debt',
-			width: 160,
+			flex: 1,
 			renderCell: (params) => {
 				return params.row.credit + ',00 DA';
 			},
@@ -105,12 +113,14 @@ const WorkerInfo = () => {
 		{
 			field: 'action',
 			headerName: 'Action',
-			width: 50,
+			flex: 1,
+			align: 'center',
+			headerAlign: 'center',
 			renderCell: (params) => {
 				return (
-					<div className="actionCell">
+					<div className="action--icons">
 						<DeleteOutline
-							className="deleteIcon"
+							className="icon delete"
 							onClick={() => {
 								deletePayroll(dispatch, params.row._id);
 							}}
@@ -145,14 +155,7 @@ const WorkerInfo = () => {
 	};
 
 	//date
-	const today = new Date();
-	const options = {
-		weekday: 'long',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	};
-	const date = today.toLocaleDateString('fr-FR', options);
+	const date = getDate();
 
 	//add payroll
 	const handelSubmit = async (e) => {
@@ -194,9 +197,6 @@ const WorkerInfo = () => {
 	const handleDeleteAll = async () => {
 		dispatch(DELETE_ALL_PAYROLL_START());
 		try {
-			// deleteAllPayroll(dispatch, worker._id)
-			console.log(worker._id);
-
 			await axiosI.delete('/payroll/all/' + worker._id, {
 				headers: {
 					token:
@@ -204,10 +204,9 @@ const WorkerInfo = () => {
 				},
 			});
 			dispatch(DELETE_ALL_PAYROLL_SUCCESS());
-			toast.success('payrolls has been deleted');
+			toast.success('payrolls has been deleted.');
 		} catch (error) {
 			dispatch(DELETE_ALL_PAYROLL_FAILURE());
-			console.log(error);
 		}
 	};
 
@@ -215,13 +214,15 @@ const WorkerInfo = () => {
 		<div className="workerInfo">
 			<div className="wrapper">
 				<div className="header workerInfoHeader">
-					<h3 className="title" style={{ textTransform: 'capitalize' }}>
-						Works off: {worker?.name}
-					</h3>
+					<h3 className="title">{worker?.name} Daily Work</h3>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
-								<Button variant="contained" size="small">
+								<Button
+									variant="outlined"
+									size="small"
+									color="primary"
+									startIcon={<PrintOutlined />}>
 									print
 								</Button>
 							)}
@@ -229,15 +230,14 @@ const WorkerInfo = () => {
 						/>
 						<Button
 							size="small"
-							variant="outlined"
-							color="primary"
+							variant="contained"
+							color="default"
 							className="button"
-							onClick={() => {
-								// handleCalc();
-								handleCopen();
-							}}>
-							calculate
+							startIcon={<AccountBalanceOutlined />}
+							onClick={() => handleCopen()}>
+							account balance
 						</Button>
+
 						<Button
 							size="small"
 							variant="contained"
@@ -263,14 +263,12 @@ const WorkerInfo = () => {
 				{!isFetching ? (
 					<div
 						className="table"
-						style={{ height: '145vh', width: '100%' }}
+						style={{ height: '80vh', width: '100%', paddingTop: '20px' }}
 						ref={workerRef}>
 						<DataGrid
 							rows={payrolls}
 							columns={columns}
-							pageSize={14}
-							checkboxSelection
-							disableSelectionOnClick
+							pageSize={10}
 							getRowId={(r) => r._id}
 						/>
 					</div>
@@ -287,49 +285,72 @@ const WorkerInfo = () => {
 					aria-describedby="simple-modal-description">
 					{/* body */}
 					<div style={modalStyle} className={classes.paper}>
-						<h2 id="simple-modal-title" style={{ marginBottom: '10px' }}>
-							New work:
+						<h2
+							id="simple-modal-title"
+							style={{
+								marginBottom: '12px',
+								fontSize: '18px',
+								color: '#333',
+								fontWeight: 600,
+							}}>
+							New work day
 						</h2>
 						<div id="simple-modal-description">
 							<form className="newTransactionForm" onSubmit={handelSubmit}>
 								<div className="formGroup">
-									<label htmlFor="desc">Description</label>
-									<input
+									<label htmlFor="desc" className="label">
+										Description
+									</label>
+									<textarea
 										type="string"
 										name="desc"
 										id="desc"
 										placeholder="Entre Description"
+										className="textarea"
 										value={desc}
-										onChange={(e) => setDesc(e.target.value)}
-									/>
+										onChange={(e) => setDesc(e.target.value)}></textarea>
 								</div>
 								<div className="formGroup">
-									<label htmlFor="total">Total</label>
+									<label htmlFor="total" className="label">
+										Total
+									</label>
 									<input
 										type="number"
 										name="total"
 										id="total"
 										placeholder="Enter Total"
+										className="input"
 										value={total}
 										onChange={(e) => setTotal(e.target.value)}
 									/>
 								</div>
 								<div className="formGroup">
-									<label htmlFor="payment"> Payment</label>
+									<label htmlFor="payment" className="label">
+										{' '}
+										withdrawal
+									</label>
 									<input
 										type="number"
 										name="payment"
 										id="payment"
-										placeholder="Enter payment"
+										placeholder="Enter withdrawal"
+										className="input"
 										value={payment}
 										onChange={(e) => setPayment(e.target.value)}
 									/>
 								</div>
 
 								<div className="formGroup">
-									<Button type="submit" color="primary" variant="outlined">
-										Send
-									</Button>
+									<div className="formGroup">
+										<Button
+											type="submit"
+											color="primary"
+											variant="contained"
+											size="large"
+											startIcon={<AddOutlined />}>
+											add
+										</Button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -341,15 +362,36 @@ const WorkerInfo = () => {
 					onClose={handleCclose}
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description">
-					{/* body */}
 					<div style={modalStyle} className={classes.paper}>
-						<h2 id="simple-modal-title" style={{ marginBottom: '20px' }}>
-							Calculation:
+						<h2
+							id="simple-modal-title"
+							style={{
+								marginBottom: '25px',
+								fontSize: '20px',
+								color: '#333',
+								fontWeight: 600,
+							}}>
+							Calculation
 						</h2>
-						<div className="head">
-							<p>Total: {calcTotal},00 DA</p>
-							<p>Payment: {calcPayment},00 DA </p>
-							<p>Debt: {calcCredit},00 DA </p>
+						<div className="calculation">
+							<div className="calculation--item total">
+								<span className="calculation--item__title">Total</span>
+								<span className="calculation--item__value">
+									{calcTotal},00 DA
+								</span>
+							</div>
+							<div className="calculation--item withdrawal">
+								<span className="calculation--item__title">Withdrawal</span>
+								<span className="calculation--item__value">
+									{calcPayment},00 DA
+								</span>
+							</div>
+							<div className="calculation--item rest">
+								<span className="calculation--item__title">Rest</span>
+								<span className="calculation--item__value">
+									{calcCredit},00 DA
+								</span>
+							</div>
 						</div>
 					</div>
 				</Modal>

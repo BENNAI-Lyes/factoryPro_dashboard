@@ -6,13 +6,66 @@
 
 	.wrapper {
 		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
 
-		.deleteIcon {
-			color: red;
-		}
-		.headerButton {
+		.header {
 			display: flex;
-			gap: 20px;
+			justify-content: space-between;
+
+			.title {
+				font-size: 24px;
+				font-weight: 600;
+				color: #333;
+			}
+			.headerButton {
+				display: flex;
+				gap: 15px;
+			}
+		}
+
+		.table {
+			@media print {
+				width: 210mm;
+				height: 297mm;
+				size: A4;
+			}
+
+			.action--icons {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				.icon {
+					border-radius: 50%;
+					font-size: 22px;
+					padding: 2px;
+					cursor: pointer;
+					transition: all 0.4s ease;
+
+					&:hover {
+						transform: scale(1.2);
+					}
+				}
+
+				.edit {
+					background-color: #9db3bf;
+					color: #fff;
+				}
+				.delete {
+					background-color: lightcoral;
+					color: #fff;
+				}
+
+				@media print {
+					display: none !important;
+				}
+			}
+		}
+		.progressCenter {
+			margin: auto;
+			padding-top: 30px;
 		}
 	}
 }
@@ -25,58 +78,61 @@
 	.formGroup {
 		display: flex;
 		flex-direction: column;
-		flex-wrap: wrap;
 		gap: 10px;
 
-		input {
-			padding: 10px;
+		.label {
+			font-size: 14px;
+			color: #333;
+			font-weight: 500;
+		}
+		.textarea {
+			height: 100px;
+			border-radius: 5px;
+			outline: none;
+			border: 1px solid lightgray;
+			padding: 15px;
+		}
+		.input {
+			border-radius: 5px;
+			outline: none;
+			border: 1px solid lightgray;
+			padding: 15px;
 		}
 	}
 }
 
-.head {
+.calculation {
 	display: flex;
 	justify-content: space-between;
-	gap: 15px;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
-	padding-bottom: 5px;
-	font-size: 17px;
-	font-weight: 500;
-	margin-bottom: 20px;
-}
 
-.workerInfoHeader {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 15px;
-}
-
-.calc .b {
-	display: flex;
-	gap: 15px;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
-	padding: 5px;
-	font-size: 17px;
-	font-weight: 500;
-
-	span {
+	&--item {
+		padding: 15px 10px;
 		width: 150px;
-	}
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 
-	&.success {
-		background-color: rgb(221, 247, 181);
-	}
+		&.total {
+			background-color: lightblue;
+		}
 
-	&.danger {
-		background-color: rgb(245, 179, 179);
-	}
-}
+		&.withdrawal {
+			background-color: rgb(245, 179, 179);
+		}
 
-.noT {
-	text-align: center;
-	margin: 20px 0;
-	color: gray;
-	font-size: 28px;
+		&.rest {
+			background-color: rgb(221, 247, 181);
+		}
+
+		&__title {
+			font-size: 22px;
+			color: rgb(102, 101, 101);
+			color: #555;
+		}
+		&__value {
+			color: #333;
+			font-size: 25px;
+		}
+	}
 }

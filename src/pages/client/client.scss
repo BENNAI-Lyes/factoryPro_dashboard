@@ -4,48 +4,31 @@
 	left: 220px;
 	top: 50px;
 
-	.titleContainer {
-		margin-bottom: 20px;
-
-		.title {
-			color: #333;
-			font-size: 18px;
-			font-weight: 700;
-		}
+	h2 {
+		margin-bottom: 30px;
+		color: #333;
+		font-size: 24px;
+		font-weight: 600;
 	}
-
-	.productContainer {
-		padding: 20px;
-
+	.form {
+		margin-bottom: 25px;
 		display: flex;
-		justify-content: space-between;
-
-		.form {
-			margin-top: 18px;
+		flex-wrap: wrap;
+		gap: 20px;
+		.group {
 			display: flex;
-			flex-wrap: wrap;
-			gap: 20px;
-			.group {
-				display: flex;
-				flex-direction: column;
-				gap: 10px;
-				width: 340px;
-				input {
-					padding: 15px;
-					border-radius: 5px;
-					border: 1px solid #ccc;
-				}
+			flex-direction: column;
+			gap: 0px;
+			width: 320px;
+			input {
+				padding: 15px;
+				border: none;
+				outline: none;
+				border-bottom: 1px solid #ccc;
+				transition: all 0.3s ease;
 
-				.add {
-					padding: 10px 0;
-					background-color: darkblue;
-					color: #fff;
-					font-weight: 500;
-					font-size: 18px;
-					border: none;
-					cursor: pointer;
-					border-radius: 5px;
-					margin-top: 30px;
+				&:focus {
+					border-bottom: 1px solid lightblue;
 				}
 			}
 		}

@@ -1,13 +1,20 @@
 import './clients.scss';
 import { DataGrid } from '@material-ui/data-grid';
-import { Add, PrintOutlined } from '@material-ui/icons';
+import {
+	Add,
+	DeleteOutline,
+	EditOutlined,
+	PrintOutlined,
+} from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 import { ClientsContext } from '../../context/clientContext/clientContext';
-import { getClients } from '../../context/clientContext/clientApiCalls';
+import {
+	deleteClient,
+	getClients,
+} from '../../context/clientContext/clientApiCalls';
 import ReactToPrint from 'react-to-print';
-import ActionCell from './components/actionCell/ActionCell';
 
 const Clients = () => {
 	const { dispatch, clients, isFetching } = useContext(ClientsContext);
@@ -31,7 +38,7 @@ const Clients = () => {
 								pathname: `/customer-transactions/${params.row._id}`,
 								client: params.row,
 							}}>
-							<p style={{ textDecoration: 'underline' }}>Transactions</p>
+							<p style={{ textDecoration: 'underline' }}>All Transactions</p>
 						</Link>
 					</div>
 				);
@@ -67,7 +74,26 @@ const Clients = () => {
 			align: 'center',
 			headerAlign: 'center',
 			renderCell: (params) => {
-				return <ActionCell params={params} />;
+				return (
+					<div className="action--icons">
+						<Link
+							to={{
+								pathname: `/customer/${params.row._id}`,
+								client: params.row,
+							}}>
+							<EditOutlined className="icon edit" />
+						</Link>
+
+						<div>
+							<DeleteOutline
+								className="icon delete"
+								onClick={() => {
+									deleteClient(dispatch, params.row._id);
+								}}
+							/>
+						</div>
+					</div>
+				);
 			},
 		},
 	];
@@ -97,7 +123,7 @@ const Clients = () => {
 								size="small"
 								color="primary">
 								{' '}
-								New client{' '}
+								New customer
 							</Button>
 						</Link>
 					</div>
@@ -105,14 +131,12 @@ const Clients = () => {
 				{!isFetching ? (
 					<div
 						className="table"
-						style={{ height: '250vh', width: '100%', paddingTop: '20px' }}
+						style={{ height: '80vh', width: '100%', paddingTop: '20px' }}
 						ref={clientRef}>
 						<DataGrid
 							rows={clients}
 							columns={columns}
-							pageSize={28}
-							checkboxSelection
-							disableSelectionOnClick
+							pageSize={10}
 							getRowId={(r) => r._id}
 						/>
 					</div>

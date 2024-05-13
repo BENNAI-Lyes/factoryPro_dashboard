@@ -5,37 +5,31 @@
 	top: 50px;
 
 	h2 {
+		margin-bottom: 30px;
 		color: #333;
-		font-size: 18px;
-		margin-bottom: 25px;
-		font-weight: 800;
+		font-size: 24px;
+		font-weight: 600;
 	}
 	.form {
-		margin-top: 20px;
+		margin-bottom: 25px;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 25px;
+		gap: 20px;
 		.group {
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
-			width: 350px;
+			gap: 0px;
+			width: 320px;
 			input {
 				padding: 15px;
-				border-radius: 5px;
-				border: 1px solid #ccc;
-			}
-
-			.add {
-				padding: 10px 0;
-				background-color: darkblue;
-				color: #fff;
-				font-weight: 500;
-				font-size: 18px;
 				border: none;
-				cursor: pointer;
-				border-radius: 5px;
-				margin-top: 30px;
+				outline: none;
+				border-bottom: 1px solid #ccc;
+				transition: all 0.3s ease;
+
+				&:focus {
+					border-bottom: 1px solid lightblue;
+				}
 			}
 		}
 	}

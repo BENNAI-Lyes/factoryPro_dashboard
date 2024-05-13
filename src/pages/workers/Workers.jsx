@@ -1,15 +1,16 @@
-import './workers.scss';
 import { DataGrid } from '@material-ui/data-grid';
-import { Edit, DeleteOutline, Add } from '@material-ui/icons';
+import { Edit, DeleteOutline, Add, PrintOutlined } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
+import ReactToPrint from 'react-to-print';
+
+import './workers.scss';
 import { WorkersContext } from '../../context/workerContext/workerContext';
 import {
 	deleteWorker,
 	getWorkers,
 } from '../../context/workerContext/workerApiCalls';
-import ReactToPrint from 'react-to-print';
 
 const Workers = () => {
 	const { dispatch, workers, isFetching } = useContext(WorkersContext);
@@ -23,8 +24,8 @@ const Workers = () => {
 	const columns = [
 		{
 			field: 'détails',
-			headerName: 'Account',
-			width: 200,
+			headerName: 'Account Balance',
+			flex: 1,
 			renderCell: (params) => {
 				return (
 					<div className="actionCell">
@@ -33,7 +34,7 @@ const Workers = () => {
 								pathname: `/worker-account/${params.row._id}`,
 								worker: params.row,
 							}}>
-							<p style={{ textDecoration: 'underline' }}>Account</p>
+							<p style={{ textDecoration: 'underline' }}>Account Balance</p>
 						</Link>
 					</div>
 				);
@@ -42,39 +43,43 @@ const Workers = () => {
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 240,
+			flex: 1,
 		},
 		{
 			field: 'address',
 			headerName: 'Address',
-			width: 270,
+			flex: 1,
 		},
 		{
 			field: 'phone',
 			headerName: 'Phone Number',
-			width: 250,
+			flex: 1,
 		},
 
 		{
 			field: 'action',
 			headerName: 'Action',
-			width: 70,
+			flex: 1,
+			align: 'center',
+			headerAlign: 'center',
 			renderCell: (params) => {
 				return (
-					<div className="actionCell">
+					<div className="action--icons">
 						<Link
 							to={{
 								pathname: `/worker/${params.row._id}`,
 								worker: params.row,
 							}}>
-							<Edit className="editIcon" />
+							<Edit className="icon edit" />
 						</Link>
-						<DeleteOutline
-							className="deleteIcon"
-							onClick={() => {
-								deleteWorker(dispatch, params.row._id);
-							}}
-						/>
+						<div>
+							<DeleteOutline
+								className="icon delete"
+								onClick={() => {
+									deleteWorker(dispatch, params.row._id);
+								}}
+							/>
+						</div>
 					</div>
 				);
 			},
@@ -84,12 +89,16 @@ const Workers = () => {
 		<div className="workers">
 			<div className="wrapper">
 				<div className="header">
-					<h3 className="title">Employees</h3>
+					<h2 className="title">Workers list</h2>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
-								<Button variant="contained" size="small">
-									print
+								<Button
+									variant="outlined"
+									size="small"
+									color="primary"
+									startIcon={<PrintOutlined />}>
+									Print
 								</Button>
 							)}
 							content={() => workerRef.current}
@@ -109,15 +118,13 @@ const Workers = () => {
 				{!isFetching ? (
 					<div
 						className="table"
-						style={{ height: '250vh', width: '100%', paddingTop: '20px' }}
+						style={{ height: '80vh', width: '100%', paddingTop: '20px' }}
 						ref={workerRef}>
 						<DataGrid
 							rows={workers}
 							columns={columns}
-							pageSize={28}
-							checkboxSelection
-							disableSelectionOnClick
-							getRowId={(r) => r._id}
+							pageSize={10}
+							getRowId={(r) => r._id || Math.random()}
 						/>
 					</div>
 				) : (
