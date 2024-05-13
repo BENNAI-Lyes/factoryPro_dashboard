@@ -4,12 +4,28 @@
 	left: 220px;
 	top: 50px;
 
-	.button {
-		margin-left: 20px;
+	.wrapper {
+		padding: 20px;
+
+		.header {
+			display: flex;
+			justify-content: flex-end;
+		}
 	}
 }
 
 .items {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-top: 20px;
+
+	@media print {
+		border: none;
+
+		width: 220mm !important;
+		height: 284mm !important;
+	}
+
 	.versWrapper {
 		padding: 1rem;
 		margin-left: 15px;
