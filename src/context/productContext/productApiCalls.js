@@ -13,6 +13,9 @@ import {
 	GET_PRODUCT_FAILURE,
 	GET_PRODUCT_START,
 	GET_PRODUCT_SUCCESS,
+	UPDATE_PRODUCT_FAILURE,
+	UPDATE_PRODUCT_START,
+	UPDATE_PRODUCT_SUCCESS,
 } from './productContextActions';
 
 //get products
@@ -84,17 +87,17 @@ export const addProduct = async (dispatch, product) => {
 
 //update product
 export const updateProduct = async (dispatch, product) => {
-	dispatch(ADD_PRODUCT_START());
+	dispatch(UPDATE_PRODUCT_START());
 	try {
 		const res = await axiosI.put('product/' + product._id, product, {
 			headers: {
 				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
 			},
 		});
-		dispatch(ADD_PRODUCT_SUCCESS(res?.data));
+		dispatch(UPDATE_PRODUCT_SUCCESS(res?.data));
 		toast.success('Product Updated successfully.');
 	} catch (error) {
 		toast.error(error.response.data?.message);
-		dispatch(ADD_PRODUCT_FAILURE(error));
+		dispatch(UPDATE_PRODUCT_FAILURE(error));
 	}
 };

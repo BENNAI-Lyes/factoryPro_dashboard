@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 
 import './newWorker.scss';
 import { WorkersContext } from '../../context/workerContext/workerContext';
-import { addWorker } from '../../context/workerContext/workerApiCalls';
 import { Button } from '@material-ui/core';
 import { AddOutlined } from '@material-ui/icons';
 import {
@@ -60,7 +59,7 @@ export default function NewWorker() {
 					<label htmlFor="name">Name</label>
 					<input
 						type="text"
-						placeholder="Entre Name"
+						placeholder="Entre Worker Name"
 						className="input"
 						id="name"
 						value={name}
@@ -71,7 +70,7 @@ export default function NewWorker() {
 					<label htmlFor="email">Email</label>
 					<input
 						type="email"
-						placeholder="Entre Email"
+						placeholder="Entre Worker Email"
 						className="input"
 						id="email"
 						value={email}
@@ -85,7 +84,7 @@ export default function NewWorker() {
 						type="text"
 						id="address"
 						className="input"
-						placeholder="Entre address"
+						placeholder="Entre Worker address"
 						value={address}
 						onChange={(e) => setAddress(e.target.value)}
 					/>
@@ -97,7 +96,7 @@ export default function NewWorker() {
 						type="string"
 						id="phone"
 						className="input"
-						placeholder="Entre phone number "
+						placeholder="Entre Worker phone number "
 						value={phone}
 						onChange={(e) => setPhone(e.target.value)}
 					/>

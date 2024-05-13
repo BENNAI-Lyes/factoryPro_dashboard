@@ -8,6 +8,9 @@ import Modal from '@material-ui/core/Modal';
 import { CircularProgress } from '@material-ui/core';
 import { BillsContext } from '../../context/billContext/billContext';
 import { getBills } from '../../context/billContext/billContextApiCalls';
+import { VisibilityOutlined } from '@material-ui/icons';
+import { ClientsContext } from '../../context/clientContext/clientContext';
+import { getClients } from '../../context/clientContext/clientApiCalls';
 
 function getModalStyle() {
 	const top = 50;
@@ -23,61 +26,84 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
-		width: 800,
+		width: 600,
 		backgroundColor: theme.palette.background.paper,
 		border: '1px solid #ccc',
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
-		borderRadius: '8px',
+		borderRadius: '5px',
 	},
 }));
 
 const ReturnProducts = () => {
-	const { dispatch, bills, isFetching } = useContext(BillsContext);
+	const [rp, setRp] = useState();
 
-	const [rp, setRp] = useState([]);
+	const { dispatch, bills, isFetching } = useContext(BillsContext);
 
 	useEffect(() => {
 		getBills(dispatch);
 	}, [dispatch]);
 
-	//TODO:
-	// const handelShowProductsClick = (id) => {
-	// 	handleOpen();
-	// 	const p = returnProducts.find((rp) => rp._id === id);
-	// 	setRp(p.products);
-	// };
+	// FETCH CLIENTS
+	const { dispatch: dispatchClients, clients } = useContext(ClientsContext);
+	useEffect(() => {
+		getClients(dispatchClients);
+	}, [dispatchClients]);
+
+	// FORMATE DATA TABLE
+	const formattedData = bills
+		?.map((bill) => {
+			if (bill?.productsReturned?.length === 0) return null;
+
+			const currentClient = clients?.find(
+				(client) => client._id === bill.clientId
+			);
+
+			return {
+				billNumber: bill.number,
+				returnDate: bill.productsReturned[0]?.date,
+				orderDate: bill.date,
+				products: bill.productsReturned,
+				clientName: currentClient?.name,
+			};
+		})
+		.filter((data) => data !== null);
+
+	const handelShowProductsClick = (products) => {
+		handleOpen();
+		setRp(products);
+	};
 
 	const columns = [
-		{ field: 'billNumber', headerName: 'bill Number', width: 150 },
+		{ field: 'billNumber', headerName: 'bill Number', flex: 1 },
 		{
 			field: 'clientName',
 			headerName: 'Client Name',
-			width: 200,
+			flex: 1,
 		},
 		{
-			field: 'rDate',
+			field: 'returnDate',
 			headerName: 'Return Date',
-			width: 200,
+			flex: 1,
 		},
 		{
-			field: 'bDate',
+			field: 'orderDate',
 			headerName: 'Bill Date',
-			width: 200,
+			flex: 1,
 		},
 		{
 			field: 'products',
 			headerName: 'Products',
-			width: 200,
+			flex: 1,
+			align: 'center',
+			headerAlign: 'center',
+
 			renderCell: (params) => {
 				return (
 					<div
-						className="editIcon"
-						style={{ color: 'blue' }}
-						//TODO:
-						// onClick={() => handelShowProductsClick(params.row._id)}
-					>
-						View Products
+						className="action--icons"
+						onClick={() => handelShowProductsClick(params.row.products)}>
+						<VisibilityOutlined className="icon view" />
 					</div>
 				);
 			},
@@ -102,8 +128,26 @@ const ReturnProducts = () => {
 		<div className="returnedProducts">
 			<div className="wrapper">
 				<div className="header">
-					<h2 className="title">Returned Products:</h2>
+					<h2 className="title">Returned products list</h2>
 				</div>
+
+				{isFetching ? (
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					</div>
+				) : (
+					<div
+						className="table"
+						style={{ height: '80vh', width: '100%', paddingTop: '20px' }}>
+						<DataGrid
+							rows={formattedData}
+							columns={columns}
+							pageSize={10}
+							getRowId={(r) => r._id || Math.random()}
+						/>
+					</div>
+				)}
+
 				<Modal
 					open={open}
 					onClose={handleClose}
@@ -111,50 +155,38 @@ const ReturnProducts = () => {
 					aria-describedby="simple-modal-description">
 					{/* body */}
 					<div style={modalStyle} className={classes.paper}>
-						<h2 id="simple-modal-title" style={{ marginBottom: '10px' }}>
-							Products:
+						<h2
+							id="simple-modal-title"
+							style={{
+								marginBottom: '12px',
+								fontSize: '18px',
+								color: '#333',
+								fontWeight: 600,
+							}}>
+							Returned Products
 						</h2>
 						<div id="simple-modal-description">
-							{rp.map((p, index) => (
+							{rp?.map((p, index) => (
 								<div key={index}>
-									<h3 style={{ marginTop: '12px', marginBottom: '7px' }}>
-										{index + 1} :
-									</h3>
 									<p
 										style={{
 											display: 'flex',
 											justifyContent: 'space-between',
+											marginBottom: '12px',
 										}}>
 										<span>
-											<strong>Name: </strong> {p?.name}{' '}
+											<strong>- Product: </strong> {p?.name}{' '}
 										</span>{' '}
 										<span>
 											{' '}
 											<strong>Quantity: </strong> {p?.quantity}{' '}
 										</span>
 									</p>
-									<hr style={{ marginTop: '10px' }} />
 								</div>
 							))}
 						</div>
 					</div>
 				</Modal>
-				{isFetching ? (
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
-					</div>
-				) : (
-					<div className="table" style={{ height: '210vh', width: '100%' }}>
-						<DataGrid
-							rows={[]}
-							columns={columns}
-							pageSize={10}
-							checkboxSelection
-							disableSelectionOnClick
-							getRowId={(r) => r._id || Math.random()}
-						/>
-					</div>
-				)}
 			</div>
 		</div>
 	);

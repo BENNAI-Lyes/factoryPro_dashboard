@@ -1,90 +1,122 @@
-import './newProduct.scss';
 import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import './newProduct.scss';
 import { addProduct } from '../../context/productContext/productApiCalls';
 import { ProductsContext } from '../../context/productContext/productContext';
+import { Button } from '@material-ui/core';
+import { AddOutlined } from '@material-ui/icons';
+import {
+	ADD_PRODUCT_FAILURE,
+	ADD_PRODUCT_START,
+	ADD_PRODUCT_SUCCESS,
+} from '../../context/productContext/productContextActions';
+import { axiosI } from '../../config';
+import { toast } from 'react-toastify';
 
 export default function NewProduct() {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [netProfit, setNetProfit] = useState(0);
+	const history = useHistory();
 
-  const { dispatch, products } = useContext(ProductsContext);
+	const [name, setName] = useState('');
+	const [price, setPrice] = useState(0);
+	const [quantity, setQuantity] = useState(0);
+	const [netProfit, setNetProfit] = useState(0);
 
-  const handelSubmit = (e) => {
-    e.preventDefault();
-    addProduct(dispatch, {
-      name,
-      price,
-      quantity,
-      netProfit,
-      number: products.length + 1,
-    });
+	const { dispatch, products } = useContext(ProductsContext);
 
-    setName('');
-    setPrice(0);
-    setQuantity(0);
-    setNetProfit(0);
-  };
+	const handelSubmit = async (e) => {
+		e.preventDefault();
+		dispatch(ADD_PRODUCT_START());
+		try {
+			const res = await axiosI.post(
+				'product',
+				{
+					name,
+					price,
+					quantity,
+					netProfit,
+					number: products.length + 1,
+				},
+				{
+					headers: {
+						token:
+							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+					},
+				}
+			);
+			dispatch(ADD_PRODUCT_SUCCESS(res?.data));
+			toast.success('Product Added successfully.');
+			history.push('/products');
+			setName('');
+			setPrice(0);
+			setQuantity(0);
+			setNetProfit(0);
+		} catch (error) {
+			toast.error(error.response.data?.message);
+			dispatch(ADD_PRODUCT_FAILURE(error));
+		}
+	};
 
-  return (
-    <div className="newProduct">
-      <h2>New Product</h2>
-      <form className="form" onSubmit={handelSubmit}>
-        <div className="group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            placeholder="Name"
-            className="input"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+	return (
+		<div className="newProduct">
+			<h2>New Product</h2>
+			<form className="form">
+				<div className="group">
+					<label htmlFor="name">Name</label>
+					<input
+						type="text"
+						placeholder="Enter Product Name"
+						className="input"
+						id="name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+				</div>
 
-        <div className="group">
-          <label htmlFor="price">Price</label>
-          <input
-            type="number"
-            id="price"
-            className="input"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
+				<div className="group">
+					<label htmlFor="price">Price</label>
+					<input
+						type="number"
+						id="price"
+						className="input"
+						placeholder="Price"
+						value={price}
+						onChange={(e) => setPrice(e.target.value)}
+					/>
+				</div>
 
-        <div className="group">
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            type="number"
-            id="quantity"
-            className="input"
-            placeholder="Quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
-        </div>
+				<div className="group">
+					<label htmlFor="quantity">Quantity</label>
+					<input
+						type="number"
+						id="quantity"
+						className="input"
+						placeholder="Quantity"
+						value={quantity}
+						onChange={(e) => setQuantity(e.target.value)}
+					/>
+				</div>
 
-        <div className="group">
-          <label htmlFor="quantity">Net Profit</label>
-          <input
-            type="number"
-            id="netProfit"
-            className="input"
-            placeholder="Net Profit"
-            value={netProfit}
-            onChange={(e) => setNetProfit(e.target.value)}
-          />
-        </div>
-
-        <div className="group">
-          <button className="add" type="submit">
-            Add
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+				<div className="group">
+					<label htmlFor="quantity">Net Profit</label>
+					<input
+						type="number"
+						id="netProfit"
+						className="input"
+						placeholder="Net Profit"
+						value={netProfit}
+						onChange={(e) => setNetProfit(e.target.value)}
+					/>
+				</div>
+			</form>
+			<Button
+				variant="contained"
+				size="small"
+				color="primary"
+				startIcon={<AddOutlined />}
+				onClick={handelSubmit}>
+				Add new product
+			</Button>
+		</div>
+	);
 }

@@ -208,6 +208,7 @@ const UpdateBill = () => {
 			productsReturned: returnedProducts.map((r) => ({
 				name: r.name,
 				quantity: r.quantity,
+				date,
 			})),
 		});
 
@@ -227,7 +228,7 @@ const UpdateBill = () => {
 		if (returnProduct && returnQuantity) {
 			setReturnedProducts((prev) => [
 				...prev,
-				{ name: returnProduct, quantity: returnQuantity },
+				{ name: returnProduct, quantity: returnQuantity, date },
 			]);
 
 			setMoneyMin(
