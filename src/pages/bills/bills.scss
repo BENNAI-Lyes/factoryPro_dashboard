@@ -55,8 +55,11 @@
 				}
 				.view {
 					background-color: #38b3e3;
-
 					color: #fff;
+				}
+
+				@media print {
+					display: none !important;
 				}
 			}
 		}

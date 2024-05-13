@@ -37,15 +37,34 @@
 					border-radius: 50%;
 				}
 			}
-			.actionCell {
-				.editIcon {
-					color: green;
-					cursor: pointer;
-					margin-right: 10px;
+			.action--icons {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				@media print {
+					display: none !important;
 				}
-				.deleteIcon {
-					color: red;
+
+				.icon {
+					border-radius: 50%;
+					font-size: 22px;
+					padding: 2px;
 					cursor: pointer;
+					transition: all 0.4s ease;
+
+					&:hover {
+						transform: scale(1.2);
+					}
+				}
+
+				.delete {
+					background-color: lightcoral;
+					color: #fff;
+				}
+				.view {
+					background-color: #38b3e3;
+					color: #fff;
 				}
 			}
 		}

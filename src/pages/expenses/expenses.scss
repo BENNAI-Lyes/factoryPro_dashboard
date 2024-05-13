@@ -25,6 +25,10 @@
 			align-items: center;
 			gap: 8px;
 
+			@media print {
+				display: none;
+			}
+
 			.icon {
 				border-radius: 50%;
 				font-size: 22px;

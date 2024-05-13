@@ -3,31 +3,53 @@ import { DataGrid } from '@material-ui/data-grid';
 import {
 	DeleteOutline,
 	Add,
-	Visibility,
 	PrintOutlined,
+	VisibilityOutlined,
 } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
+import ReactToPrint from 'react-to-print';
+
 import { InvoicesContext } from '../../context/invoiceContext/invoiceContext';
 import {
 	deleteInvoice,
 	getInvoices,
 } from '../../context/invoiceContext/invoiceApiCalls';
-import ReactToPrint from 'react-to-print';
-import ActionCell from './components/actionCell/ActionCell';
+import { formatDate } from '../../helpers/getDate';
+import { getClients } from '../../context/clientContext/clientApiCalls';
+import { ClientsContext } from '../../context/clientContext/clientContext';
 
 const Invoices = () => {
-	const { dispatch, invoices, isFetching } = useContext(InvoicesContext);
 	const invoicesRef = useRef();
+	const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+	const { dispatch, invoices, isFetching } = useContext(InvoicesContext);
+
+	// FETCH CLIENTS
+	const { dispatch: dispatchClients, clients } = useContext(ClientsContext);
+	useEffect(() => {
+		getClients(dispatchClients);
+	}, [dispatchClients]);
+
+	// FORMATE DATA TABLE
+	const formattedData = invoices?.map((invoice) => {
+		const currentClient = clients?.find(
+			(client) => client._id === invoice.clientId
+		);
+
+		return {
+			...invoice,
+			clientName: currentClient?.name,
+		};
+	});
 
 	useEffect(() => {
 		getInvoices(dispatch);
 	}, [dispatch]);
 
 	const columns = [
-		{ field: 'number', headerName: 'N°', flex: 1 },
-
+		{ field: 'number', headerName: 'Number', flex: 1 },
 		{
 			field: 'clientName',
 			headerName: 'client',
@@ -38,18 +60,19 @@ const Invoices = () => {
 			headerName: 'Date',
 			flex: 1,
 			renderCell: (params) => {
-				return params.row.createdAt.slice(0, 10);
+				return DATE_PATTERN.test(params.row.date)
+					? formatDate(params.row.date)
+					: params.row.date;
 			},
 		},
 		{
-			field: 'total',
+			field: 'totalPrice',
 			headerName: 'Total',
 			flex: 1,
 			renderCell: (params) => {
-				return params.row.total + ',00 DA';
+				return params.row.totalPrice + ',00 DA';
 			},
 		},
-
 		{
 			field: 'action',
 			headerName: 'Action',
@@ -57,7 +80,23 @@ const Invoices = () => {
 			align: 'center',
 			headerAlign: 'center',
 			renderCell: (params) => {
-				return <ActionCell params={params} />;
+				return (
+					<div className="action--icons">
+						<Link
+							to={{
+								pathname: `/invoice/${params.row._id}`,
+								invoice: params.row,
+							}}>
+							<VisibilityOutlined className="icon view " />
+						</Link>
+						<div
+							onClick={() => {
+								deleteInvoice(dispatch, params.row._id);
+							}}>
+							<DeleteOutline className="icon delete " />
+						</div>
+					</div>
+				);
 			},
 		},
 	];
@@ -98,11 +137,9 @@ const Invoices = () => {
 						style={{ height: '80vh', width: '100%', paddingTop: '20px' }}
 						ref={invoicesRef}>
 						<DataGrid
-							rows={invoices}
+							rows={formattedData}
 							columns={columns}
 							pageSize={10}
-							checkboxSelection
-							disableSelectionOnClick
 							getRowId={(row) => row._id}
 						/>
 					</div>
