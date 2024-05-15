@@ -1,7 +1,5 @@
 import {
 	LineStyle,
-	Timeline,
-	TrendingUp,
 	Storefront,
 	AttachMoney,
 	WorkOutline,
@@ -32,18 +30,6 @@ export default function Sidebar() {
 								Home
 							</li>
 						</Link>
-						<li
-							className={` ${
-								href === '/analytics' && 'active'
-							} sidebarListItem `}>
-							<Timeline className="sidebarIcon" />
-							Analytics
-						</li>
-						<li
-							className={` ${href === '/sales' && 'active'} sidebarListItem `}>
-							<TrendingUp className="sidebarIcon" />
-							Sales
-						</li>
 					</ul>
 				</div>
 

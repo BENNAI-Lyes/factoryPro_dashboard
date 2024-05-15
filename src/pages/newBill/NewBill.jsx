@@ -110,9 +110,13 @@ const NewBill = () => {
 	const [clientInputValue, setClientInputValue] = useState('');
 	const [clientValue, setClientValue] = useState(null);
 
+	console.log('client', client);
+
 	//set remise value
 	useEffect(() => {
-		setBonData({ ...bonData, remise: clientValue?.remise });
+		setBonData((prev) => {
+			return { ...prev, remise: clientValue?.remise };
+		});
 	}, [clientValue]);
 
 	const handelAutoCompleatClientChange = (event, newValue) => {
@@ -135,7 +139,7 @@ const NewBill = () => {
 					remise: bonData.remise,
 					total,
 					totalRemise,
-					transportPrice: transport,
+					transport,
 					newSold:
 						bonData?.remise !== '0'
 							? totalRemise + clientValue?.credit

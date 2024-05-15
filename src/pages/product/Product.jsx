@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 
 import './product.scss';
 import { ProductsContext } from '../../context/productContext/productContext';
-import { updateProduct } from '../../context/productContext/productApiCalls';
 import {
 	UPDATE_PRODUCT_FAILURE,
 	UPDATE_PRODUCT_START,
@@ -21,7 +20,6 @@ export default function Product() {
 	const [name, setName] = useState(product.name);
 	const [price, setPrice] = useState(product.price);
 	const [quantity, setQuantity] = useState(product.quantity);
-	const [netProfit, setNetProfit] = useState(product.netProfit);
 
 	const { dispatch } = useContext(ProductsContext);
 
@@ -31,7 +29,7 @@ export default function Product() {
 		try {
 			const res = await axiosI.put(
 				'product/' + product._id,
-				{ name, price, quantity, netProfit },
+				{ name, price, quantity },
 				{
 					headers: {
 						token:
@@ -86,18 +84,6 @@ export default function Product() {
 						placeholder="Enter Quantity"
 						value={quantity}
 						onChange={(e) => setQuantity(e.target.value)}
-					/>
-				</div>
-
-				<div className="group">
-					<label htmlFor="quantity">Net Profit</label>
-					<input
-						type="number"
-						id="netProfit"
-						className="input"
-						placeholder="Enter Net Profit"
-						value={netProfit}
-						onChange={(e) => setNetProfit(e.target.value)}
 					/>
 				</div>
 			</form>

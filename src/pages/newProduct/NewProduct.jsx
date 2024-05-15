@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import './newProduct.scss';
-import { addProduct } from '../../context/productContext/productApiCalls';
+
 import { ProductsContext } from '../../context/productContext/productContext';
 import { Button } from '@material-ui/core';
 import { AddOutlined } from '@material-ui/icons';
@@ -20,7 +20,6 @@ export default function NewProduct() {
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState(0);
 	const [quantity, setQuantity] = useState(0);
-	const [netProfit, setNetProfit] = useState(0);
 
 	const { dispatch, products } = useContext(ProductsContext);
 
@@ -34,7 +33,6 @@ export default function NewProduct() {
 					name,
 					price,
 					quantity,
-					netProfit,
 					number: products.length + 1,
 				},
 				{
@@ -50,7 +48,6 @@ export default function NewProduct() {
 			setName('');
 			setPrice(0);
 			setQuantity(0);
-			setNetProfit(0);
 		} catch (error) {
 			toast.error(error.response.data?.message);
 			dispatch(ADD_PRODUCT_FAILURE(error));
@@ -94,18 +91,6 @@ export default function NewProduct() {
 						placeholder="Quantity"
 						value={quantity}
 						onChange={(e) => setQuantity(e.target.value)}
-					/>
-				</div>
-
-				<div className="group">
-					<label htmlFor="quantity">Net Profit</label>
-					<input
-						type="number"
-						id="netProfit"
-						className="input"
-						placeholder="Net Profit"
-						value={netProfit}
-						onChange={(e) => setNetProfit(e.target.value)}
 					/>
 				</div>
 			</form>

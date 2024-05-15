@@ -87,6 +87,8 @@ const NewInvoice = () => {
 	const [clientInputValue, setClientInputValue] = useState('');
 	const [clientValue, setClientValue] = useState(null);
 
+	console.log('client', client);
+
 	const handelAutoCompleatClientChange = (event, newValue) => {
 		setClient(newValue.title);
 		setClientValue(newValue);

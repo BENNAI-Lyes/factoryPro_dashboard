@@ -26,7 +26,7 @@ const Vers = () => {
 					/>
 				</div>
 
-				<div className="items" ref={bonRef}>
+				<div className="vers-items" ref={bonRef}>
 					<div className="versWrapper">
 						<div className="top">
 							<div className="topLeft">

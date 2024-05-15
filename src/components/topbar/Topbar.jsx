@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ExitToAppOutlined, Person } from '@material-ui/icons';
+import { ExitToAppOutlined } from '@material-ui/icons';
 
 import './topbar.scss';
 import logo from '../../assets/img/logo.png';

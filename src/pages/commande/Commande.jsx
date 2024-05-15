@@ -34,7 +34,7 @@ const Commande = () => {
 	const [clientInputValue, setClientInputValue] = useState('');
 	const [clientValue, setClientValue] = useState(null);
 
-	console.log('clientValue', clientValue);
+	console.log('client', client);
 
 	const handelAutoCompleatClientChange = (event, newValue) => {
 		setClient(newValue.title);

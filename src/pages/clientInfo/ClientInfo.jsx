@@ -1,10 +1,11 @@
-import './clientInfo.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { useLocation } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+
+import './clientInfo.scss';
 import { TransactionsContext } from '../../context/transactionContext/transactionContext';
 import {
 	deleteTransaction,
@@ -44,7 +45,11 @@ const ClientInfo = () => {
 		getTransactions(dispatch, client?._id);
 	}, [dispatch, client]);
 
-	const { dispatch: dispatchBills, bills } = useContext(BillsContext);
+	const {
+		dispatch: dispatchBills,
+		bills,
+		isFetching,
+	} = useContext(BillsContext);
 
 	useEffect(() => {
 		getBills(dispatchBills);
@@ -52,30 +57,31 @@ const ClientInfo = () => {
 
 	// table columns
 	const columns = [
-		{ field: 'billNumber', headerName: 'Bill Number', width: 250 },
+		{ field: 'billNumber', headerName: 'Bill Number', flex: 1 },
 		{
 			field: 'date',
 			headerName: 'Date',
-			width: 300,
+			flex: 1,
 		},
 		{
 			field: 'vers',
 			headerName: 'Payment',
-			width: 350,
+			flex: 1,
 		},
 
 		{
 			field: 'action',
 			headerName: 'Action',
-			width: 180,
+			flex: 1,
+			align: 'center',
+			headerAlign: 'center',
 
 			renderCell: (params) => {
 				return (
-					<div className="actionCell">
+					<div className="action--icons">
 						<DeleteOutline
-							className="deleteIcon"
+							className="icon delete "
 							onClick={() => {
-								console.log(params.row);
 								deleteTransaction(dispatch, params.row._id);
 
 								//update client
@@ -103,7 +109,7 @@ const ClientInfo = () => {
 	const classes = useStyles();
 
 	return (
-		<div className="clients">
+		<div className="clientInfo">
 			<div className="wrapper">
 				<div className="header">
 					<h2
@@ -115,7 +121,7 @@ const ClientInfo = () => {
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
-								<Button variant="outlined" color="secondary">
+								<Button variant="outlined" color="primary" size="small">
 									print
 								</Button>
 							)}
@@ -124,20 +130,24 @@ const ClientInfo = () => {
 					</div>
 				</div>
 
-				<div
-					className="table"
-					style={{ height: '145vh', width: '100%' }}
-					ref={tabelRef}>
-					<DataGrid
-						rows={transactions}
-						columns={columns}
-						pageSize={14}
-						checkboxSelection
-						disableSelectionOnClick
-						getRowId={(r) => r._id}
-						className={classes.root}
-					/>
-				</div>
+				{!isFetching ? (
+					<div
+						className="table"
+						style={{ height: '80vh', width: '100%' }}
+						ref={tabelRef}>
+						<DataGrid
+							rows={transactions}
+							columns={columns}
+							pageSize={14}
+							getRowId={(r) => r._id}
+							className={classes.root}
+						/>
+					</div>
+				) : (
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

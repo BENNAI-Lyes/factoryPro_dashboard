@@ -1,0 +1,47 @@
+.pieChartComponent {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	.footer {
+		margin-top: -80px;
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+
+		.item {
+			display: flex;
+			align-items: center;
+			gap: 3px;
+
+			.circle {
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				background-color: red;
+
+				&.sold {
+					background-color: #00c49f;
+				}
+
+				&.returned {
+					background-color: #ff8042;
+				}
+			}
+			div {
+				font-size: 12px;
+				color: gray;
+				font-weight: 500;
+
+				span.sold {
+					color: #00c49f;
+					font-weight: 600;
+				}
+				span.returned {
+					color: #ff8042;
+					font-weight: 600;
+				}
+			}
+		}
+	}
+}
