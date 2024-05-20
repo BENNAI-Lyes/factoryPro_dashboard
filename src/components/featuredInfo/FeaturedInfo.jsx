@@ -8,11 +8,14 @@ import {
 } from '@material-ui/icons';
 
 import './featuredInfo.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { axiosI } from '../../config';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function FeaturedInfo({ data }) {
 	const [customersStats, setCustomersStats] = useState({});
+
+	const { user } = useContext(AuthContext);
 
 	//FETCH CUSTOMERS STATS
 	useEffect(() => {
@@ -20,8 +23,7 @@ export default function FeaturedInfo({ data }) {
 			try {
 				const res = await axiosI('client/total-by-month', {
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				});
 				setCustomersStats(res.data);
@@ -30,7 +32,7 @@ export default function FeaturedInfo({ data }) {
 			}
 		};
 		fetchCustomersStats();
-	}, []);
+	}, [user.accessToken]);
 
 	//GET DATE AS (ex: 2024-05) FORMAT
 	const date = new Date();

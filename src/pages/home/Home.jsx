@@ -3,13 +3,16 @@ import FeaturedInfo from '../../components/featuredInfo/FeaturedInfo';
 import AreaChartComponent from '../../components/areaChartComponent/AreaChartComponent';
 import LatestTransactions from '../../components/latestTransactions/LatestTransactions';
 import NewCustomers from '../../components/newCustomers/NewCustomers';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { axiosI } from '../../config';
 import PieChartComponent from '../../components/pieChartComponent/PieChartComponent';
+import { AuthContext } from '../../context/authContext/authContext';
 
 const Home = () => {
 	const [salesTransportStats, setSalesTransportStats] = useState([]);
 	const [expensesStats, setExpensesStats] = useState([]);
+
+	const { user } = useContext(AuthContext);
 
 	// FETCH SALES && TRANSPORT STATS
 	useEffect(() => {
@@ -17,11 +20,11 @@ const Home = () => {
 			try {
 				const res = await axiosI.get('bon/sells-stats', {
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				});
 
+				console.log('sales&&transport data', res.data);
 				setSalesTransportStats(res.data);
 			} catch (error) {
 				console.log(error);
@@ -29,7 +32,7 @@ const Home = () => {
 		};
 
 		fetchSalesStats();
-	}, []);
+	}, [user.accessToken]);
 
 	// FETCH EXPENSES STATS
 	useEffect(() => {
@@ -37,12 +40,10 @@ const Home = () => {
 			try {
 				const res = await axiosI.get('expense/stats', {
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				});
 
-				console.log('expenses stat', res.data);
 				setExpensesStats(res.data);
 			} catch (error) {
 				console.log(error);
@@ -50,7 +51,7 @@ const Home = () => {
 		};
 
 		fetchSalesStats();
-	}, []);
+	}, [user.accessToken]);
 
 	const mergeArrays = (expenses, sales) => {
 		const combinedMap = {};

@@ -21,9 +21,10 @@ export const getTransactions = async (dispatch, id) => {
 				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
 			},
 		});
+
 		dispatch(GET_TRANSACTIONS_SUCCESS(res.data));
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(GET_TRANSACTIONS_FAILURE(error));
 	}
 };
@@ -41,7 +42,7 @@ export const deleteTransaction = async (dispatch, id) => {
 		dispatch(DELETE_TRANSACTION_SUCCESS(id));
 	} catch (error) {
 		console.log('fuukkkkkkkkkkkkkkkk=>', error);
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(DELETE_TRANSACTION_FAILURE(error));
 	}
 };
@@ -58,7 +59,7 @@ export const addTransaction = async (dispatch, transaction) => {
 		dispatch(ADD_TRANSACTION_SUCCESS(res.data));
 		toast.success('Transaction Added successfully.');
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(ADD_TRANSACTION_FAILURE(error));
 	}
 };
@@ -80,7 +81,7 @@ export const updateTransaction = async (dispatch, transaction) => {
 		dispatch(ADD_TRANSACTION_SUCCESS(res.data));
 		toast.success('Transaction Updated successfully.');
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(ADD_TRANSACTION_FAILURE(error));
 	}
 };

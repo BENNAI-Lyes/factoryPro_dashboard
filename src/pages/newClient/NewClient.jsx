@@ -13,9 +13,12 @@ import {
 } from '../../context/clientContext/clientContextActions';
 
 import { axiosI } from '../../config';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function NewClient() {
 	const history = useHistory();
+
+	const { user } = useContext(AuthContext);
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -53,8 +56,7 @@ export default function NewClient() {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -74,7 +76,7 @@ export default function NewClient() {
 
 			history.push('/customers');
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_CLIENT_FAILURE(error));
 		}
 	};

@@ -26,12 +26,14 @@ import { ClientsContext } from '../../context/clientContext/clientContext';
 import { axiosI } from '../../config';
 import { BillsContext } from '../../context/billContext/billContext';
 import { getBill } from '../../context/billContext/billContextApiCalls';
+import { AuthContext } from '../../context/authContext/authContext';
 
 const Bill = () => {
 	const billId = useParams().id;
 	const history = useHistory();
 	const bonRef = useRef();
 
+	const { user } = useContext(AuthContext);
 	//FETCH ORDER
 	const { dispatch: dispatchBill, bills } = useContext(BillsContext);
 	useEffect(() => {
@@ -69,7 +71,7 @@ const Bill = () => {
 	const handelDelete = async () => {
 		await axiosI.delete('bon/' + bills[0]?._id, {
 			headers: {
-				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+				token: 'Bearer ' + user.accessToken,
 			},
 		});
 		toast.success('Bill Deleted Successfully.');

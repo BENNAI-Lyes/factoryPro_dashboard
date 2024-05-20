@@ -30,6 +30,7 @@ import {
 } from '../../context/payrollContext/payrollContextActions';
 import { axiosI } from '../../config';
 import { getDate } from '../../helpers/getDate';
+import { AuthContext } from '../../context/authContext/authContext';
 
 //MODAL STYLES
 function getModalStyle() {
@@ -58,6 +59,7 @@ const WorkerInfo = () => {
 	const workerRef = useRef();
 	const worker = useLocation().worker;
 
+	const { user } = useContext(AuthContext);
 	const { dispatch, payrolls, isFetching } = useContext(PayrollsContext);
 
 	const [desc, setDesc] = useState('');
@@ -175,8 +177,7 @@ const WorkerInfo = () => {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -188,7 +189,7 @@ const WorkerInfo = () => {
 			setTotal(0);
 			setPayment(0);
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_PAYROLL_FAILURE(error));
 		}
 	};
@@ -199,8 +200,7 @@ const WorkerInfo = () => {
 		try {
 			await axiosI.delete('/payroll/all/' + worker._id, {
 				headers: {
-					token:
-						'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+					token: 'Bearer ' + user.accessToken,
 				},
 			});
 			dispatch(DELETE_ALL_PAYROLL_SUCCESS());

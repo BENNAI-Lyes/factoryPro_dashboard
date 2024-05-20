@@ -30,7 +30,7 @@ export const getPayrolls = async (dispatch, workerId) => {
 		dispatch(GET_PAYROLLS_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(GET_PAYROLLS_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -46,7 +46,7 @@ export const getPayroll = async (dispatch, id) => {
 		dispatch(GET_PAYROLL_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(GET_PAYROLL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -63,7 +63,7 @@ export const deletePayroll = async (dispatch, id) => {
 		dispatch(DELETE_PAYROLL_SUCCESS(id));
 	} catch (error) {
 		dispatch(DELETE_PAYROLL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -77,7 +77,7 @@ export const deletePayroll = async (dispatch, id) => {
 //       {
 //         headers: {
 //           token:
-//             'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+//             'Bearer ' + JSON.parse(JSON.stringify(localStorage.getItem('user'))).accessToken,
 //         },
 //       }
 //     );
@@ -85,7 +85,7 @@ export const deletePayroll = async (dispatch, id) => {
 //     dispatch(DELETE_ALL_PAYROLL_SUCCESS());
 //   } catch (error) {
 //     dispatch(DELETE_PAYROLL_FAILURE(error));
-//     toast.error(error.response.data.message);
+//     toast.error(error?.response?.data?.message);
 //   }
 // };
 
@@ -104,7 +104,7 @@ export const addPayroll = async (dispatch, payroll) => {
 		//discount products quantity
 	} catch (error) {
 		dispatch(ADD_PAYROLL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -121,6 +121,6 @@ export const updatePayroll = async (dispatch, payroll) => {
 		dispatch(UPDATE_PAYROLL_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(UPDATE_PAYROLL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };

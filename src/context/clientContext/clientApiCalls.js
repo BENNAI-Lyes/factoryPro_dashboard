@@ -24,9 +24,9 @@ export const getClients = async (dispatch) => {
 				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
 			},
 		});
-		dispatch(GET_CLIENTS_SUCCESS(res.data));
+		dispatch(GET_CLIENTS_SUCCESS(res?.data));
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(GET_CLIENTS_FAILURE(error));
 	}
 };
@@ -40,9 +40,9 @@ export const getClient = async (dispatch, id) => {
 				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
 			},
 		});
-		dispatch(GET_CLIENT_SUCCESS([res.data]));
+		dispatch(GET_CLIENT_SUCCESS([res?.data]));
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(GET_CLIENT_FAILURE(error));
 	}
 };
@@ -59,7 +59,7 @@ export const deleteClient = async (dispatch, id) => {
 		toast.success('Client Deleted successfully.');
 		dispatch(DELETE_CLIENT_SUCCESS(id));
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(DELETE_CLIENT_FAILURE(error));
 	}
 };
@@ -76,7 +76,7 @@ export const addClient = async (dispatch, client) => {
 		dispatch(ADD_CLIENT_SUCCESS(res.data));
 		toast.success('Client Added successfully.');
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(ADD_CLIENT_FAILURE(error));
 	}
 };
@@ -93,7 +93,7 @@ export const updateClient = async (dispatch, client) => {
 		dispatch(ADD_CLIENT_SUCCESS(res.data));
 		toast.success('Client Updated successfully.');
 	} catch (error) {
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 		dispatch(ADD_CLIENT_FAILURE(error));
 	}
 };

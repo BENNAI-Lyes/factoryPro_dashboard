@@ -28,6 +28,7 @@ import { axiosI } from '../../config';
 import ReactToPrint from 'react-to-print';
 
 import { formatDate } from '../../helpers/getDate';
+import { AuthContext } from '../../context/authContext/authContext';
 
 function getModalStyle() {
 	const top = 50;
@@ -56,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 const Expenses = () => {
 	const expenseRef = useRef();
 	const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+	const { user } = useContext(AuthContext);
 
 	const { dispatch, expenses, isFetching } = useContext(ExpensesContext);
 
@@ -138,8 +141,7 @@ const Expenses = () => {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -150,7 +152,7 @@ const Expenses = () => {
 			setName('');
 			setPrice('');
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_EXPENSE_FAILURE(error));
 		}
 	};

@@ -12,10 +12,13 @@ import {
 	ADD_CLIENT_SUCCESS,
 } from '../../context/clientContext/clientContextActions';
 import { axiosI } from '../../config';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function Client() {
 	const history = useHistory();
 	const client = useLocation().client;
+
+	const { user } = useContext(AuthContext);
 
 	const [name, setName] = useState(client.name);
 	const [email, setEmail] = useState(client.email);
@@ -54,8 +57,7 @@ export default function Client() {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -63,7 +65,7 @@ export default function Client() {
 			toast.success('Client Updated successfully.');
 			history.push('/customers');
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_CLIENT_FAILURE(error));
 		}
 	};

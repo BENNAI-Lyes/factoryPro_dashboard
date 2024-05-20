@@ -13,9 +13,12 @@ import {
 } from '../../context/productContext/productContextActions';
 import { axiosI } from '../../config';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function NewProduct() {
 	const history = useHistory();
+
+	const { user } = useContext(AuthContext);
 
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState(0);
@@ -37,8 +40,7 @@ export default function NewProduct() {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);

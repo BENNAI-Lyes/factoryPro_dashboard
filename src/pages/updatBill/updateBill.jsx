@@ -35,6 +35,7 @@ import {
 } from '../../context/billContext/billContextApiCalls';
 import { updateClient } from '../../context/clientContext/clientApiCalls';
 import { ClientsContext } from '../../context/clientContext/clientContext';
+import { AuthContext } from '../../context/authContext/authContext';
 import {
 	ADD_TRANSACTION_FAILURE,
 	ADD_TRANSACTION_START,
@@ -73,6 +74,8 @@ const UpdateBill = () => {
 	const billId = useParams().id;
 	const date = getDate();
 
+	const { user } = useContext(AuthContext);
+
 	// FETCH ORDERS
 	const { dispatch: dispatchBill, bills } = useContext(BillsContext);
 	useEffect(() => {
@@ -103,8 +106,7 @@ const UpdateBill = () => {
 			try {
 				const res = await axiosI.get('client/find/' + bills[0].clientId, {
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				});
 
@@ -114,7 +116,7 @@ const UpdateBill = () => {
 			}
 		};
 		getClient();
-	}, [bills]);
+	}, [bills, user.accessToken]);
 
 	const [returnQuantity, setReturnQuantity] = useState(0);
 	const [returnProduct, setReturnProduct] = useState('');
@@ -173,8 +175,7 @@ const UpdateBill = () => {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -195,7 +196,7 @@ const UpdateBill = () => {
 				_id: client._id,
 			});
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_TRANSACTION_FAILURE(error));
 		}
 	};

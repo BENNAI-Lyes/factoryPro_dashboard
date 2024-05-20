@@ -12,10 +12,12 @@ import { axiosI } from '../../config';
 import { toast } from 'react-toastify';
 import { Button } from '@material-ui/core';
 import { UpdateOutlined } from '@material-ui/icons';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function Product() {
 	const history = useHistory();
 
+	const { user } = useContext(AuthContext);
 	const product = useLocation().product;
 	const [name, setName] = useState(product.name);
 	const [price, setPrice] = useState(product.price);
@@ -32,8 +34,7 @@ export default function Product() {
 				{ name, price, quantity },
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);

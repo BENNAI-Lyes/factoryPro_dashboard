@@ -48,11 +48,14 @@ import {
 import { axiosI } from '../../config';
 import { formatDate, getDate } from '../../helpers/getDate';
 import DatePicker from '../../components/datePicker/DatePicker';
+import { AuthContext } from '../../context/authContext/authContext';
 
 const NewBill = () => {
 	const history = useHistory();
 	const bonRef = useRef();
 	const date = getDate();
+
+	const { user } = useContext(AuthContext);
 
 	const [bonData, setBonData] = useState({
 		remise: '0',
@@ -159,8 +162,7 @@ const NewBill = () => {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -220,23 +222,21 @@ const NewBill = () => {
 					},
 					{
 						headers: {
-							token:
-								'Bearer ' +
-								JSON.parse(localStorage.getItem('user')).accessToken,
+							token: 'Bearer ' + user.accessToken,
 						},
 					}
 				);
 				dispatch(ADD_TRANSACTION_SUCCESS(res.data));
 				toast.success('Transaction Added successfully.');
 			} catch (error) {
-				toast.error(error.response.data.message);
+				toast.error(error?.response?.data?.message);
 				dispatch(ADD_TRANSACTION_FAILURE(error));
 			}
 
 			history.push('/orders', { replace: true });
 		} catch (error) {
 			dispatch(ADD_BILL_FAILURE(error));
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 		} finally {
 			setLoading(false);
 		}

@@ -12,9 +12,12 @@ import {
 } from '../../context/workerContext/workerContextActions';
 import { axiosI } from '../../config';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function NewWorker() {
 	const history = useHistory();
+
+	const { user } = useContext(AuthContext);
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -32,8 +35,7 @@ export default function NewWorker() {
 				{ name, email, address, phone },
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -46,7 +48,7 @@ export default function NewWorker() {
 
 			history.push('/workers');
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatch(ADD_WORKER_FAILURE(error));
 		}
 	};

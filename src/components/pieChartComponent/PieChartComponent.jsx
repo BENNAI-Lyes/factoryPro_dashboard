@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import './pieChartComponent.scss';
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { axiosI } from '../../config';
+import { AuthContext } from '../../context/authContext/authContext';
 
 const COLORS = ['#00C49F', '#FF8042'];
 
@@ -36,6 +37,8 @@ const PieChartComponent = () => {
 	const [billsCreatedThisMonth, setBillsCreatedThisMonth] = useState([]);
 	const [totalSoldProducts, setTotalSoldProducts] = useState(0);
 	const [totalReturnedProducts, setTotalReturnedProducts] = useState(0);
+
+	const { user } = useContext(AuthContext);
 
 	const data = [
 		{ name: 'products sold', value: totalSoldProducts },
@@ -71,8 +74,7 @@ const PieChartComponent = () => {
 			try {
 				const res = await axiosI.get('bon/created-this-month', {
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				});
 
@@ -83,7 +85,7 @@ const PieChartComponent = () => {
 		};
 
 		fetchBillsCreatedThisMonth();
-	}, []);
+	}, [user.accessToken]);
 
 	return (
 		<div className="pieChartComponent">

@@ -1,21 +1,41 @@
 import './login.scss';
 
 import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { EmailOutlined, LockOutlined } from '@material-ui/icons';
 
 import { AuthContext } from '../../context/authContext/authContext';
-import { login } from '../../context/authContext/authContextApiCalls';
+import {
+	LOGIN_FAILURE,
+	LOGIN_START,
+	LOGIN_SUCCESS,
+} from '../../context/authContext/authContextActions';
+import { axiosI } from '../../config';
+import { toast } from 'react-toastify';
 
 const Login = () => {
+	const history = useHistory();
+
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const { dispatch, isFetching } = useContext(AuthContext);
 
-	const handelSubmit = (e) => {
+	const handelSubmit = async (e) => {
 		e.preventDefault();
-		login(dispatch, { email, password });
+
+		dispatch(LOGIN_START());
+		try {
+			const res = await axiosI.post('auth/login', { email, password });
+			if (res.data.isAdmin) {
+				dispatch(LOGIN_SUCCESS(res.data));
+				history.push('/');
+			}
+		} catch (error) {
+			dispatch(LOGIN_FAILURE(error));
+			toast.error(error?.response?.data?.message);
+		}
 	};
 
 	return (

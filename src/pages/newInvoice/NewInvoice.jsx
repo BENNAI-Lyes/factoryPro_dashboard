@@ -39,10 +39,13 @@ import { ClientsContext } from '../../context/clientContext/clientContext';
 import { axiosI } from '../../config';
 import DatePicker from '../../components/datePicker/DatePicker';
 import { formatDate, getDate } from '../../helpers/getDate';
+import { AuthContext } from '../../context/authContext/authContext';
 
 const NewInvoice = () => {
 	const history = useHistory();
 	const bonRef = useRef();
+
+	const { user } = useContext(AuthContext);
 
 	// GET CURRENT DATE
 	const date = getDate();
@@ -151,8 +154,7 @@ const NewInvoice = () => {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);
@@ -170,7 +172,7 @@ const NewInvoice = () => {
 
 			history.push('/invoices', { replace: true });
 		} catch (error) {
-			toast.error(error.response.data.message);
+			toast.error(error?.response?.data?.message);
 			dispatchInvoice(ADD_INVOICE_FAILURE(error));
 		}
 	};

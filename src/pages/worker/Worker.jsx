@@ -12,10 +12,13 @@ import {
 } from '../../context/workerContext/workerContextActions';
 import { axiosI } from '../../config';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/authContext/authContext';
 
 export default function Worker() {
 	const history = useHistory();
 	const worker = useLocation().worker;
+
+	const user = useContext(AuthContext);
 
 	const [name, setName] = useState(worker.name);
 	const [email, setEmail] = useState(worker.email);
@@ -39,8 +42,7 @@ export default function Worker() {
 				},
 				{
 					headers: {
-						token:
-							'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+						token: 'Bearer ' + user.accessToken,
 					},
 				}
 			);

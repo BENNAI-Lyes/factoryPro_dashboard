@@ -9,11 +9,22 @@ import Paper from '@material-ui/core/Paper';
 
 import './latestTransactions.scss';
 import { useContext, useEffect } from 'react';
-import { getBills } from '../../context/billContext/billContextApiCalls';
 import { BillsContext } from '../../context/billContext/billContext';
-import { getClients } from '../../context/clientContext/clientApiCalls';
 import { ClientsContext } from '../../context/clientContext/clientContext';
 import { CircularProgress } from '@material-ui/core';
+import {
+	GET_CLIENTS_FAILURE,
+	GET_CLIENTS_START,
+	GET_CLIENTS_SUCCESS,
+} from '../../context/clientContext/clientContextActions';
+import { axiosI } from '../../config';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/authContext/authContext';
+import {
+	GET_BILLS_FAILURE,
+	GET_BILLS_START,
+	GET_BILLS_SUCCESS,
+} from '../../context/billContext/billContextActions';
 
 const useStyles = makeStyles({
 	table: {
@@ -28,15 +39,56 @@ function createData(number, client, date, total) {
 const LatestTransactions = () => {
 	const classes = useStyles();
 
-	const { dispatch, bills, isFetching } = useContext(BillsContext);
-	useEffect(() => {
-		getBills(dispatch);
-	}, [dispatch]);
+	//get user from the store
+	const { user } = useContext(AuthContext);
 
-	const { dispatch: dispatchClients, clients } = useContext(ClientsContext);
+	//fetch clients
+	const {
+		dispatch: dispatchClients,
+		isFetchingClients,
+		clients,
+	} = useContext(ClientsContext);
 	useEffect(() => {
-		getClients(dispatchClients);
-	}, [dispatchClients]);
+		const fetchClients = async () => {
+			dispatchClients(GET_CLIENTS_START());
+			try {
+				const res = await axiosI.get('client', {
+					headers: {
+						token: 'Bearer ' + user.accessToken,
+					},
+				});
+				dispatchClients(GET_CLIENTS_SUCCESS(res?.data));
+			} catch (error) {
+				toast.error(error?.response?.data?.message);
+				dispatchClients(GET_CLIENTS_FAILURE(error));
+			}
+		};
+		fetchClients();
+	}, [user.accessToken, dispatchClients]);
+
+	//fetching bills
+	const {
+		dispatch: dispatchBills,
+		isFetchingBills,
+		bills,
+	} = useContext(BillsContext);
+	useEffect(() => {
+		const fetchBills = async () => {
+			dispatchBills(GET_BILLS_START());
+			try {
+				const res = await axiosI.get('bon', {
+					headers: {
+						token: 'Bearer ' + user.accessToken,
+					},
+				});
+				dispatchBills(GET_BILLS_SUCCESS(res.data));
+			} catch (error) {
+				dispatchBills(GET_BILLS_FAILURE(error));
+				toast.error(error?.response?.data?.message);
+			}
+		};
+		fetchBills();
+	}, [dispatchBills, user.accessToken]);
 
 	// FORMATE DATA TABLE
 	const formattedData = bills?.slice(-5)?.map((bill) => {
@@ -60,7 +112,7 @@ const LatestTransactions = () => {
 	return (
 		<div className="latestTransactions">
 			<h2 className="title">Latest Transactions</h2>
-			{!isFetching ? (
+			{!isFetchingClients || !isFetchingBills ? (
 				<TableContainer component={Paper} className="stat-table">
 					<Table className={classes.table} aria-label="simple table">
 						<TableHead>

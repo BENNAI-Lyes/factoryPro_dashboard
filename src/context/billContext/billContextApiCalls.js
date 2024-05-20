@@ -33,7 +33,7 @@ export const getBills = async (dispatch) => {
 		dispatch(GET_BILLS_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(GET_BILLS_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -49,7 +49,7 @@ export const getBill = async (dispatch, id) => {
 		dispatch(GET_BILL_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(GET_BILL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -67,7 +67,7 @@ export const deleteBill = async (dispatch, id) => {
 		dispatch(DELETE_BILL_SUCCESS(id));
 	} catch (error) {
 		dispatch(DELETE_BILL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -86,7 +86,7 @@ export const addBill = async (dispatch, bill) => {
 		//discount products quantity
 	} catch (error) {
 		dispatch(ADD_BILL_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -103,7 +103,7 @@ export const updateBill = async (dispatch, bill) => {
 		dispatch(UPDATE_BILL_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(UPDATE_BILL_FAILURE(error));
-		toast.error(error.response.data.message || 'Something went wrong');
+		toast.error(error?.response?.data?.message);
 	}
 };
 
@@ -120,6 +120,6 @@ export const getBillsStats = async (dispatch) => {
 		dispatch(GET_BILL_STATS_SUCCESS(res.data));
 	} catch (error) {
 		dispatch(GET_BILL_STATS_FAILURE(error));
-		toast.error(error.response.data.message);
+		toast.error(error?.response?.data?.message);
 	}
 };
