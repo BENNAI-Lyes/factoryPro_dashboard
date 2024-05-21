@@ -4,8 +4,9 @@ import './pieChartComponent.scss';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { axiosI } from '../../config';
 import { AuthContext } from '../../context/authContext/authContext';
+import { CircularProgress } from '@material-ui/core';
 
-const COLORS = ['#00C49F', '#FF8042'];
+const COLORS = ['#00FF7F', '#F08080'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -38,7 +39,30 @@ const PieChartComponent = () => {
 	const [totalSoldProducts, setTotalSoldProducts] = useState(0);
 	const [totalReturnedProducts, setTotalReturnedProducts] = useState(0);
 
+	const [loading, setLoading] = useState(false);
+
 	const { user } = useContext(AuthContext);
+	// FETCH DATA
+	useEffect(() => {
+		const fetchBillsCreatedThisMonth = async () => {
+			setLoading(true);
+			try {
+				const res = await axiosI.get('bon/created-this-month', {
+					headers: {
+						token: 'Bearer ' + user.accessToken,
+					},
+				});
+
+				setBillsCreatedThisMonth(res.data);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchBillsCreatedThisMonth();
+	}, [user.accessToken]);
 
 	const data = [
 		{ name: 'products sold', value: totalSoldProducts },
@@ -68,63 +92,62 @@ const PieChartComponent = () => {
 		setTotalReturnedProducts(totalReturnedProductsData);
 	}, [billsCreatedThisMonth]);
 
-	// FETCH SALES && TRANSPORT STATS
-	useEffect(() => {
-		const fetchBillsCreatedThisMonth = async () => {
-			try {
-				const res = await axiosI.get('bon/created-this-month', {
-					headers: {
-						token: 'Bearer ' + user.accessToken,
-					},
-				});
-
-				setBillsCreatedThisMonth(res.data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		fetchBillsCreatedThisMonth();
-	}, [user.accessToken]);
-
 	return (
 		<div className="pieChartComponent">
-			<ResponsiveContainer width="100%" height="100%">
-				<PieChart width={300} height={300}>
-					<Pie
-						data={data}
-						cx="50%"
-						cy="50%"
-						labelLine={false}
-						label={renderCustomizedLabel}
-						outerRadius={80}
-						fill="#8884d8"
-						dataKey="value">
-						{data.map((entry, index) => (
-							<Cell
-								key={`cell-${index}`}
-								fill={COLORS[index % COLORS.length]}
-							/>
-						))}
-					</Pie>
-				</PieChart>
-			</ResponsiveContainer>
-			<div className="footer">
-				<div className="item">
-					<div className="circle sold" />
-					<div className="desc">
-						Product sold in this month{' '}
-						<span className="sold">{totalSoldProducts} products </span>{' '}
-					</div>
+			<h2 className="pieChartTitle">Total Products Sold vs. Returned</h2>
+			{loading ? (
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						marginTop: '100px',
+					}}>
+					<CircularProgress style={{ color: 'lightGray' }} />
 				</div>
-				<div className="item ">
-					<div className="circle returned" />
-					<div className="desc">
-						Product returned in this month{' '}
-						<span className="returned"> {totalReturnedProducts} products </span>{' '}
+			) : (
+				<>
+					<ResponsiveContainer width="100%" height="100%">
+						<PieChart style={{ marginTop: '-30px' }}>
+							<Pie
+								data={data}
+								cx="50%"
+								cy="50%"
+								labelLine={false}
+								label={renderCustomizedLabel}
+								outerRadius={80}
+								fill="#8884d8"
+								dataKey="value">
+								{data.map((entry, index) => (
+									<Cell
+										key={`cell-${index}`}
+										fill={COLORS[index % COLORS.length]}
+									/>
+								))}
+							</Pie>
+						</PieChart>
+					</ResponsiveContainer>
+					<div className="footer">
+						<div className="item">
+							<div className="circle sold" />
+							<div className="desc">
+								Product sold in this month{' '}
+								<span className="sold">{totalSoldProducts} products </span>{' '}
+							</div>
+						</div>
+						<div className="item ">
+							<div className="circle returned" />
+							<div className="desc">
+								Product returned in this month{' '}
+								<span className="returned">
+									{' '}
+									{totalReturnedProducts} products{' '}
+								</span>{' '}
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
+				</>
+			)}
 		</div>
 	);
 };

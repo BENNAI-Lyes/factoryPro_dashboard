@@ -75,7 +75,7 @@ const Products = () => {
 		<div className="products">
 			<div className="wrapper">
 				<div className="header">
-					<h2 className="title">Products list</h2>
+					<h2 className="products-title">Products list</h2>
 
 					<div className="headerButton">
 						<ReactToPrint
@@ -116,8 +116,14 @@ const Products = () => {
 						/>
 					</div>
 				) : (
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '100px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
 					</div>
 				)}
 			</div>

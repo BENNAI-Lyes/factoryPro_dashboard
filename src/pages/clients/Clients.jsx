@@ -141,8 +141,14 @@ const Clients = () => {
 						/>
 					</div>
 				) : (
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '100px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
 					</div>
 				)}
 			</div>

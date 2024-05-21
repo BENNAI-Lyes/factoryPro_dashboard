@@ -214,7 +214,7 @@ const WorkerInfo = () => {
 		<div className="workerInfo">
 			<div className="wrapper">
 				<div className="header workerInfoHeader">
-					<h3 className="title">{worker?.name} Daily Work</h3>
+					<h3 className="title">Daily Work off: {worker?.name} </h3>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
@@ -273,8 +273,14 @@ const WorkerInfo = () => {
 						/>
 					</div>
 				) : (
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '100px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
 					</div>
 				)}
 

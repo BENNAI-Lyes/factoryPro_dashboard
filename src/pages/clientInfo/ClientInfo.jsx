@@ -38,18 +38,21 @@ const ClientInfo = () => {
 	const tabelRef = useRef();
 
 	const client = useLocation().client;
-	const { dispatch, transactions } = useContext(TransactionsContext);
+	const { dispatch, transactions, isFetching } =
+		useContext(TransactionsContext);
 	const { dispatch: dispatchClient } = useContext(ClientsContext);
 
 	useEffect(() => {
 		getTransactions(dispatch, client?._id);
 	}, [dispatch, client]);
 
-	const {
-		dispatch: dispatchBills,
-		bills,
-		isFetching,
-	} = useContext(BillsContext);
+	const { dispatch: dispatchBills, bills } = useContext(BillsContext);
+
+	console.log('transactions===>', transactions);
+	console.log(
+		'bill===>',
+		bills.find((bill) => bill.number === 22)
+	);
 
 	useEffect(() => {
 		getBills(dispatchBills);
@@ -69,40 +72,44 @@ const ClientInfo = () => {
 			flex: 1,
 		},
 
-		{
-			field: 'action',
-			headerName: 'Action',
-			flex: 1,
-			align: 'center',
-			headerAlign: 'center',
+		// {
+		// 	field: 'action',
+		// 	headerName: 'Action',
+		// 	flex: 1,
+		// 	align: 'center',
+		// 	headerAlign: 'center',
 
-			renderCell: (params) => {
-				return (
-					<div className="action--icons">
-						<DeleteOutline
-							className="icon delete "
-							onClick={() => {
-								deleteTransaction(dispatch, params.row._id);
+		// 	renderCell: (params) => {
+		// 		return (
+		// 			<div className="action--icons">
+		// 				{/* <DeleteOutline
+		// 					className="icon delete "
+		// 					onClick={() => {
+		// 						deleteTransaction(dispatch, params.row._id);
 
-								//update client
-								updateClient(dispatchClient, {
-									credit: client.credit + params.row.vers,
-									_id: params.row.clientId,
-								});
+		// 						//update client
+		// 						updateClient(dispatchClient, {
+		// 							credit: client.credit + params.row.vers,
+		// 							_id: params.row.clientId,
+		// 						});
 
-								//delete vers from the bill
-								updateBill(dispatchBills, {
-									_id: params.row.billId,
-									vers: bills
-										?.find((b) => b._id === params.row.billId)
-										?.vers?.filter((v) => v.id !== params.row.id),
-								});
-							}}
-						/>
-					</div>
-				);
-			},
-		},
+		// 						//delete vers from the bill
+		// 						updateBill(dispatchBills, {
+		// 							_id: bills.find(
+		// 								(bill) => bill.number === params.row.billNumber
+		// 							)._id,
+		// 							vers: [
+		// 								...bills.find(
+		// 									(bill) => bill.number === params.row.billNumber
+		// 								)?.vers,
+		// 							],
+		// 						});
+		// 					}}
+		// 				/> */}
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 	];
 
 	//table styles
@@ -112,12 +119,7 @@ const ClientInfo = () => {
 		<div className="clientInfo">
 			<div className="wrapper">
 				<div className="header">
-					<h2
-						className="title"
-						style={{ textTransform: 'capitalize', fontSize: '24px' }}>
-						{' '}
-						Payments off: {client?.name}{' '}
-					</h2>
+					<h2 className="title"> Payments off: {client?.name} </h2>
 					<div className="headerButton">
 						<ReactToPrint
 							trigger={() => (
@@ -144,8 +146,14 @@ const ClientInfo = () => {
 						/>
 					</div>
 				) : (
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<CircularProgress color="primary" style={{ marginTop: '50px' }} />
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '100px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
 					</div>
 				)}
 			</div>

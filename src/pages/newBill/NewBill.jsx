@@ -69,6 +69,8 @@ const NewBill = () => {
 	const [selectedDate, setSelectedDate] = useState('');
 	const [transport, setTransport] = useState(0);
 
+	const [transactionId, setTransactionId] = useState('');
+
 	//fetch bills
 	const { dispatch: dispatchBill, bills } = useContext(BillsContext);
 	useEffect(() => {
@@ -130,6 +132,38 @@ const NewBill = () => {
 	//handel save new bill
 	const handelSaveClick = async () => {
 		/* */
+		// add transactions
+		dispatch(ADD_TRANSACTION_START());
+		try {
+			const res = await axiosI.post(
+				'transaction',
+				{
+					billNumber:
+						bills.length === 0 ? 1 : bills[bills.length - 1]?.number + 1,
+					clientId: clientValue._id,
+					date: selectedDate ? selectedDate : date,
+					vers: bonData.vers,
+					billAmount: total,
+					credit:
+						total.remise !== 0
+							? clientValue.credit + (totalRemise - bonData.vers)
+							: clientValue.credit + (total - bonData.vers),
+				},
+				{
+					headers: {
+						token: 'Bearer ' + user.accessToken,
+					},
+				}
+			);
+			console.log('res.data', res.data._id);
+			setTransactionId(res.data._id);
+			dispatch(ADD_TRANSACTION_SUCCESS(res.data));
+			toast.success('Transaction Added successfully.');
+		} catch (error) {
+			toast.error(error?.response?.data?.message);
+			dispatch(ADD_TRANSACTION_FAILURE(error));
+		}
+
 		setLoading(true);
 		dispatch(ADD_BILL_START());
 		try {
@@ -149,7 +183,11 @@ const NewBill = () => {
 							: total + clientValue?.credit,
 					oldSold: clientValue?.credit,
 					vers: [
-						{ date: selectedDate ? selectedDate : date, amount: bonData.vers },
+						{
+							date: selectedDate ? selectedDate : date,
+							amount: bonData.vers,
+							id: transactionId,
+						},
 					],
 					products: rows.map((r) => ({
 						name: r.name,
@@ -202,36 +240,6 @@ const NewBill = () => {
 			setTotal(0);
 			setTotalRemise(0);
 			setTransport(0);
-
-			// add transactions
-			dispatch(ADD_TRANSACTION_START());
-			try {
-				const res = await axiosI.post(
-					'transaction',
-					{
-						billNumber:
-							bills.length === 0 ? 1 : bills[bills.length - 1]?.number + 1,
-						clientId: clientValue._id,
-						date: selectedDate ? selectedDate : date,
-						vers: bonData.vers,
-						billAmount: total,
-						credit:
-							total.remise !== 0
-								? clientValue.credit + (totalRemise - bonData.vers)
-								: clientValue.credit + (total - bonData.vers),
-					},
-					{
-						headers: {
-							token: 'Bearer ' + user.accessToken,
-						},
-					}
-				);
-				dispatch(ADD_TRANSACTION_SUCCESS(res.data));
-				toast.success('Transaction Added successfully.');
-			} catch (error) {
-				toast.error(error?.response?.data?.message);
-				dispatch(ADD_TRANSACTION_FAILURE(error));
-			}
 
 			history.push('/orders', { replace: true });
 		} catch (error) {

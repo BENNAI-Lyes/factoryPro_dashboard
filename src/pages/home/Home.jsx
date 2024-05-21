@@ -7,10 +7,14 @@ import { useContext, useEffect, useState } from 'react';
 import { axiosI } from '../../config';
 import PieChartComponent from '../../components/pieChartComponent/PieChartComponent';
 import { AuthContext } from '../../context/authContext/authContext';
+import { mergeArrays } from '../../helpers/mergeArrays';
 
 const Home = () => {
 	const [salesTransportStats, setSalesTransportStats] = useState([]);
 	const [expensesStats, setExpensesStats] = useState([]);
+
+	const [salesLoading, setSalesLoading] = useState(false);
+	const [expensesLoading, setExpensesLoading] = useState(false);
 
 	const { user } = useContext(AuthContext);
 
@@ -18,16 +22,18 @@ const Home = () => {
 	useEffect(() => {
 		const fetchSalesStats = async () => {
 			try {
+				setSalesLoading(true);
 				const res = await axiosI.get('bon/sells-stats', {
 					headers: {
 						token: 'Bearer ' + user.accessToken,
 					},
 				});
 
-				console.log('sales&&transport data', res.data);
 				setSalesTransportStats(res.data);
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setSalesLoading(false);
 			}
 		};
 
@@ -38,6 +44,7 @@ const Home = () => {
 	useEffect(() => {
 		const fetchSalesStats = async () => {
 			try {
+				setExpensesLoading(true);
 				const res = await axiosI.get('expense/stats', {
 					headers: {
 						token: 'Bearer ' + user.accessToken,
@@ -47,37 +54,13 @@ const Home = () => {
 				setExpensesStats(res.data);
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setExpensesLoading(false);
 			}
 		};
 
 		fetchSalesStats();
 	}, [user.accessToken]);
-
-	const mergeArrays = (expenses, sales) => {
-		const combinedMap = {};
-
-		const mergeObjects = (target, source) => {
-			for (const key in source) {
-				if (source.hasOwnProperty(key)) {
-					target[key] = source[key];
-				}
-			}
-		};
-
-		expenses.forEach((item) => {
-			combinedMap[item._id] = { ...item };
-		});
-
-		sales.forEach((item) => {
-			if (combinedMap[item._id]) {
-				mergeObjects(combinedMap[item._id], item);
-			} else {
-				combinedMap[item._id] = { ...item };
-			}
-		});
-
-		return Object.values(combinedMap);
-	};
 
 	const data = mergeArrays(salesTransportStats, expensesStats)?.sort((a, b) => {
 		if (a._id < b._id) {
@@ -92,9 +75,17 @@ const Home = () => {
 	return (
 		<div className="home">
 			<div className="wrapper">
-				<FeaturedInfo data={data} />
+				<FeaturedInfo
+					data={data}
+					salesLoading={salesLoading}
+					expensesLoading={expensesLoading}
+				/>
 				<div className="charts">
-					<AreaChartComponent data={data} />
+					<AreaChartComponent
+						data={data}
+						salesLoading={salesLoading}
+						expensesLoading={expensesLoading}
+					/>
 					<PieChartComponent />
 				</div>
 				<div className="tables">

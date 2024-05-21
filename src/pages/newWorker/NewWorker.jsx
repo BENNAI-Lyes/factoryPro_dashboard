@@ -55,63 +55,65 @@ export default function NewWorker() {
 
 	return (
 		<div className="newWorker">
-			<h2>New Worker</h2>
-			<form className="form">
-				<div className="group">
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						placeholder="Entre Worker Name"
-						className="input"
-						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="email">Email</label>
-					<input
-						type="email"
-						placeholder="Entre Worker Email"
-						className="input"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
+			<div className="wrapper">
+				<h2>New Worker</h2>
+				<form className="form">
+					<div className="group">
+						<label htmlFor="name">Name</label>
+						<input
+							type="text"
+							placeholder="Entre Worker Name"
+							className="input"
+							id="name"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="email">Email</label>
+						<input
+							type="email"
+							placeholder="Entre Worker Email"
+							className="input"
+							id="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="address">Address</label>
-					<input
-						type="text"
-						id="address"
-						className="input"
-						placeholder="Entre Worker address"
-						value={address}
-						onChange={(e) => setAddress(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="address">Address</label>
+						<input
+							type="text"
+							id="address"
+							className="input"
+							placeholder="Entre Worker address"
+							value={address}
+							onChange={(e) => setAddress(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="phone">Phone Number</label>
-					<input
-						type="string"
-						id="phone"
-						className="input"
-						placeholder="Entre Worker phone number "
-						value={phone}
-						onChange={(e) => setPhone(e.target.value)}
-					/>
-				</div>
-			</form>
-			<Button
-				variant="contained"
-				size="small"
-				color="primary"
-				startIcon={<AddOutlined />}
-				onClick={handelSubmit}>
-				Add new worker
-			</Button>
+					<div className="group">
+						<label htmlFor="phone">Phone Number</label>
+						<input
+							type="string"
+							id="phone"
+							className="input"
+							placeholder="Entre Worker phone number "
+							value={phone}
+							onChange={(e) => setPhone(e.target.value)}
+						/>
+					</div>
+				</form>
+				<Button
+					variant="contained"
+					size="small"
+					color="primary"
+					startIcon={<AddOutlined />}
+					onClick={handelSubmit}>
+					Add new worker
+				</Button>
+			</div>
 		</div>
 	);
 }

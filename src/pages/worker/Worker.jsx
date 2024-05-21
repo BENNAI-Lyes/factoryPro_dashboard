@@ -18,7 +18,7 @@ export default function Worker() {
 	const history = useHistory();
 	const worker = useLocation().worker;
 
-	const user = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
 	const [name, setName] = useState(worker.name);
 	const [email, setEmail] = useState(worker.email);
@@ -58,65 +58,67 @@ export default function Worker() {
 
 	return (
 		<div className="worker">
-			<h2>Update Worker </h2>
+			<div className="wrapper">
+				<h2>Update Worker </h2>
 
-			<form className="form" onSubmit={handelSubmit}>
-				<div className="group">
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						placeholder="Name"
-						className="input"
-						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
+				<form className="form" onSubmit={handelSubmit}>
+					<div className="group">
+						<label htmlFor="name">Name</label>
+						<input
+							type="text"
+							placeholder="Name"
+							className="input"
+							id="name"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="email">Email</label>
-					<input
-						type="email"
-						placeholder="Email"
-						className="input"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="email">Email</label>
+						<input
+							type="email"
+							placeholder="Email"
+							className="input"
+							id="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="address">Address</label>
-					<input
-						type="text"
-						id="address"
-						className="input"
-						placeholder="Adsress"
-						value={address}
-						onChange={(e) => setAddress(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="address">Address</label>
+						<input
+							type="text"
+							id="address"
+							className="input"
+							placeholder="Adsress"
+							value={address}
+							onChange={(e) => setAddress(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="phone">Phone Number</label>
-					<input
-						type="string"
-						id="phone"
-						className="input"
-						placeholder="Enter Phone Number"
-						value={phone}
-						onChange={(e) => setPhone(e.target.value)}
-					/>
-				</div>
-			</form>
-			<Button
-				variant="contained"
-				size="small"
-				color="primary"
-				startIcon={<UpdateOutlined />}
-				onClick={handelSubmit}>
-				update worker
-			</Button>
+					<div className="group">
+						<label htmlFor="phone">Phone Number</label>
+						<input
+							type="string"
+							id="phone"
+							className="input"
+							placeholder="Enter Phone Number"
+							value={phone}
+							onChange={(e) => setPhone(e.target.value)}
+						/>
+					</div>
+				</form>
+				<Button
+					variant="contained"
+					size="small"
+					color="primary"
+					startIcon={<UpdateOutlined />}
+					onClick={handelSubmit}>
+					update worker
+				</Button>
+			</div>
 		</div>
 	);
 }

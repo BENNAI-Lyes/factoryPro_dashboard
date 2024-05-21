@@ -45,7 +45,7 @@ const LatestTransactions = () => {
 	//fetch clients
 	const {
 		dispatch: dispatchClients,
-		isFetchingClients,
+		isFetching: isFetchingClients,
 		clients,
 	} = useContext(ClientsContext);
 	useEffect(() => {
@@ -63,13 +63,14 @@ const LatestTransactions = () => {
 				dispatchClients(GET_CLIENTS_FAILURE(error));
 			}
 		};
+
 		fetchClients();
 	}, [user.accessToken, dispatchClients]);
 
 	//fetching bills
 	const {
 		dispatch: dispatchBills,
-		isFetchingBills,
+		isFetching: isFetchingBills,
 		bills,
 	} = useContext(BillsContext);
 	useEffect(() => {
@@ -112,33 +113,61 @@ const LatestTransactions = () => {
 	return (
 		<div className="latestTransactions">
 			<h2 className="title">Latest Transactions</h2>
-			{!isFetchingClients || !isFetchingBills ? (
+			{isFetchingClients && isFetchingBills ? (
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						marginTop: '100px',
+					}}>
+					<CircularProgress style={{ color: 'lightGray' }} />
+				</div>
+			) : (
 				<TableContainer component={Paper} className="stat-table">
 					<Table className={classes.table} aria-label="simple table">
 						<TableHead>
 							<TableRow>
-								<TableCell>Number</TableCell>
-								<TableCell align="left">Client</TableCell>
-								<TableCell align="left">Date</TableCell>
-								<TableCell align="left">Total</TableCell>
+								<TableCell style={{ fontWeight: '600', color: '#555' }}>
+									Number
+								</TableCell>
+								<TableCell
+									align="left"
+									style={{ fontWeight: '600', color: '#555' }}>
+									Client
+								</TableCell>
+								<TableCell
+									align="left"
+									style={{ fontWeight: '600', color: '#555' }}>
+									Date
+								</TableCell>
+								<TableCell
+									align="left"
+									style={{ fontWeight: '600', color: '#555' }}>
+									Total
+								</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{rows.map((row) => (
 								<TableRow key={row.number}>
-									<TableCell align="left">{row.number}</TableCell>
-									<TableCell align="left">{row.client}</TableCell>
-									<TableCell align="left">{row.date}</TableCell>
-									<TableCell align="left">{row.total}</TableCell>
+									<TableCell align="left" style={{ fontSize: '11px' }}>
+										{row.number}
+									</TableCell>
+									<TableCell align="left" style={{ fontSize: '11px' }}>
+										{row.client}
+									</TableCell>
+									<TableCell align="left" style={{ fontSize: '11px' }}>
+										{row.date}
+									</TableCell>
+									<TableCell align="left" style={{ fontSize: '11px' }}>
+										{row.total}
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
 					</Table>
 				</TableContainer>
-			) : (
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<CircularProgress color="primary" style={{ marginTop: '50px' }} />
-				</div>
 			)}
 		</div>
 	);

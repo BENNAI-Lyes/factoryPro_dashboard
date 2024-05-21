@@ -83,144 +83,146 @@ export default function NewClient() {
 
 	return (
 		<div className="newClient">
-			<h2>New client</h2>
-			<form className="form">
-				<div className="group">
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						placeholder="Enter Customer Name"
-						className="input"
-						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="email">Email</label>
-					<input
-						type="email"
-						placeholder="Enter Customer Email"
-						className="input"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
+			<div className="wrapper">
+				<h2>New Customer</h2>
+				<form className="form">
+					<div className="group">
+						<label htmlFor="name">Name</label>
+						<input
+							type="text"
+							placeholder="Enter Customer Name"
+							className="input"
+							id="name"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="email">Email</label>
+						<input
+							type="email"
+							placeholder="Enter Customer Email"
+							className="input"
+							id="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="address">Address</label>
-					<input
-						type="text"
-						id="address"
-						className="input"
-						placeholder="Enter Customer Address"
-						value={address}
-						onChange={(e) => setAddress(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="address">Address</label>
+						<input
+							type="text"
+							id="address"
+							className="input"
+							placeholder="Enter Customer Address"
+							value={address}
+							onChange={(e) => setAddress(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="phone">Phone Number</label>
-					<input
-						type="text"
-						id="phone"
-						className="input"
-						placeholder="Enter Customer Phone Number"
-						value={phone}
-						onChange={(e) => setPhone(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="driver">Driver</label>
-					<input
-						type="string"
-						id="driver"
-						className="input"
-						placeholder="Enter Customer Driver"
-						value={driver}
-						onChange={(e) => setDriver(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="nif">NIF</label>
-					<input
-						type="string"
-						id="nif"
-						className="input"
-						placeholder="Enter Customer NIF"
-						value={nif}
-						onChange={(e) => setNif(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="rc">RC</label>
-					<input
-						type="string"
-						id="rc"
-						className="input"
-						placeholder="Enter Customer RC"
-						value={rc}
-						onChange={(e) => setRc(e.target.value)}
-					/>
-				</div>
-				<div className="group">
-					<label htmlFor="rc">Activity</label>
-					<input
-						type="string"
-						id="activity"
-						className="input"
-						placeholder="Enter Customer Activity"
-						value={activity}
-						onChange={(e) => setActivity(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="phone">Phone Number</label>
+						<input
+							type="text"
+							id="phone"
+							className="input"
+							placeholder="Enter Customer Phone Number"
+							value={phone}
+							onChange={(e) => setPhone(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="driver">Driver</label>
+						<input
+							type="string"
+							id="driver"
+							className="input"
+							placeholder="Enter Customer Driver"
+							value={driver}
+							onChange={(e) => setDriver(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="nif">NIF</label>
+						<input
+							type="string"
+							id="nif"
+							className="input"
+							placeholder="Enter Customer NIF"
+							value={nif}
+							onChange={(e) => setNif(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="rc">RC</label>
+						<input
+							type="string"
+							id="rc"
+							className="input"
+							placeholder="Enter Customer RC"
+							value={rc}
+							onChange={(e) => setRc(e.target.value)}
+						/>
+					</div>
+					<div className="group">
+						<label htmlFor="rc">Activity</label>
+						<input
+							type="string"
+							id="activity"
+							className="input"
+							placeholder="Enter Customer Activity"
+							value={activity}
+							onChange={(e) => setActivity(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="na">Article Number</label>
-					<input
-						type="string"
-						id="activity"
-						className="input"
-						placeholder="Enter Customer Article Number"
-						value={na}
-						onChange={(e) => setNa(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="na">Article Number</label>
+						<input
+							type="string"
+							id="activity"
+							className="input"
+							placeholder="Enter Customer Article Number"
+							value={na}
+							onChange={(e) => setNa(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="credit">Debt</label>
-					<input
-						type="number"
-						id="credit"
-						className="input"
-						placeholder="Enter Customer  debt"
-						value={credit}
-						onChange={(e) => setCredit(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="credit">Debt</label>
+						<input
+							type="number"
+							id="credit"
+							className="input"
+							placeholder="Enter Customer  debt"
+							value={credit}
+							onChange={(e) => setCredit(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="remise">Discount by Percent</label>
-					<input
-						type="number"
-						id="remise"
-						className="input"
-						placeholder="Enter Customer Discount  "
-						value={remise}
-						onChange={(e) => setRemise(e.target.value)}
-					/>
-				</div>
-			</form>
+					<div className="group">
+						<label htmlFor="remise">Discount by Percent</label>
+						<input
+							type="number"
+							id="remise"
+							className="input"
+							placeholder="Enter Customer Discount  "
+							value={remise}
+							onChange={(e) => setRemise(e.target.value)}
+						/>
+					</div>
+				</form>
 
-			<Button
-				variant="contained"
-				size="small"
-				color="primary"
-				startIcon={<AddOutlined />}
-				onClick={handelSubmit}>
-				Add new customer
-			</Button>
+				<Button
+					variant="contained"
+					size="small"
+					color="primary"
+					startIcon={<AddOutlined />}
+					onClick={handelSubmit}>
+					Add new customer
+				</Button>
+			</div>
 		</div>
 	);
 }

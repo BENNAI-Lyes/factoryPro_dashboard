@@ -12,6 +12,7 @@ const Vers = () => {
 		<div className="vers">
 			<div className="wrapper">
 				<div className="header">
+					<h2 className="title">Customer Payment Ticket</h2>
 					<ReactToPrint
 						trigger={() => (
 							<Button

@@ -11,6 +11,7 @@ import './newCustomers.scss';
 import { useContext, useEffect } from 'react';
 import { ClientsContext } from '../../context/clientContext/clientContext';
 import { getClients } from '../../context/clientContext/clientApiCalls';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles({});
 
@@ -21,7 +22,12 @@ function createData(name, address, phoneNumber, discount) {
 const NewCustomers = () => {
 	const classes = useStyles();
 
-	const { dispatch: dispatchClients, clients } = useContext(ClientsContext);
+	const {
+		dispatch: dispatchClients,
+		clients,
+		isFetching,
+	} = useContext(ClientsContext);
+
 	useEffect(() => {
 		getClients(dispatchClients);
 	}, [dispatchClients]);
@@ -30,7 +36,7 @@ const NewCustomers = () => {
 	const formattedData = clients?.slice(-5)?.map((client) => {
 		return {
 			name: client.name,
-			address: client?.name,
+			address: client?.address,
 			phoneNumber: client.phone,
 			discount: client.remise,
 		};
@@ -44,28 +50,62 @@ const NewCustomers = () => {
 		<div className="newCustomers">
 			<h2 className="title">New Customers</h2>
 			<div className="stat-table">
-				<TableContainer component={Paper}>
-					<Table className={classes.table} aria-label="simple table">
-						<TableHead>
-							<TableRow>
-								<TableCell>Name</TableCell>
-								<TableCell align="left">Address</TableCell>
-								<TableCell align="left">Phone Number</TableCell>
-								<TableCell align="left">Discount</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row) => (
-								<TableRow key={row.name}>
-									<TableCell>{row.name}</TableCell>
-									<TableCell align="left">{row.address}</TableCell>
-									<TableCell align="left">{row.phoneNumber}</TableCell>
-									<TableCell align="left">{row.discount}%</TableCell>
+				{isFetching ? (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '100px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
+					</div>
+				) : (
+					<TableContainer component={Paper}>
+						<Table className={classes.table} aria-label="simple table">
+							<TableHead>
+								<TableRow>
+									<TableCell style={{ fontWeight: '600', color: '#555' }}>
+										Name
+									</TableCell>
+									<TableCell
+										align="left"
+										style={{ fontWeight: '600', color: '#555' }}>
+										Address
+									</TableCell>
+									<TableCell
+										align="left"
+										style={{ fontWeight: '600', color: '#555' }}>
+										Phone
+									</TableCell>
+									<TableCell
+										align="left"
+										style={{ fontWeight: '600', color: '#555' }}>
+										Discount
+									</TableCell>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+							</TableHead>
+							<TableBody>
+								{rows.map((row) => (
+									<TableRow key={row.name}>
+										<TableCell style={{ fontSize: '11px' }}>
+											{row.name}
+										</TableCell>
+										<TableCell align="left" style={{ fontSize: '11px' }}>
+											{row.address}
+										</TableCell>
+										<TableCell align="left" style={{ fontSize: '11px' }}>
+											{row.phoneNumber}
+										</TableCell>
+										<TableCell align="left" style={{ fontSize: '11px' }}>
+											{row.discount}%
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				)}
 			</div>
 		</div>
 	);

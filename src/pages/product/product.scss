@@ -4,31 +4,34 @@
 	left: 220px;
 	top: 50px;
 
-	h2 {
-		margin-bottom: 30px;
-		color: #333;
-		font-size: 24px;
-		font-weight: 600;
-	}
-	.form {
-		margin-bottom: 25px;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 20px;
-		.group {
+	.wrapper {
+		padding: 20px;
+		h2 {
+			margin-bottom: 30px;
+			color: #333;
+			font-size: 20px;
+			font-weight: 600;
+		}
+		.form {
+			margin-bottom: 25px;
 			display: flex;
-			flex-direction: column;
-			gap: 0px;
-			width: 320px;
-			input {
-				padding: 15px;
-				border: none;
-				outline: none;
-				border-bottom: 1px solid #ccc;
-				transition: all 0.3s ease;
+			flex-wrap: wrap;
+			gap: 20px;
+			.group {
+				display: flex;
+				flex-direction: column;
+				gap: 0px;
+				width: 320px;
+				input {
+					padding: 15px;
+					border: none;
+					outline: none;
+					border-bottom: 1px solid #ccc;
+					transition: all 0.3s ease;
 
-				&:focus {
-					border-bottom: 1px solid lightblue;
+					&:focus {
+						border-bottom: 1px solid lightblue;
+					}
 				}
 			}
 		}

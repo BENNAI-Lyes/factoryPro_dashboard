@@ -16,10 +16,6 @@ import {
 export const getWorkers = async (dispatch) => {
 	dispatch(GET_WORKERS_START());
 	try {
-		console.log(
-			'access token in get workers====>',
-			JSON.parse(localStorage.getItem('user')).accessToken
-		);
 		const res = await axiosI.get('worker', {
 			headers: {
 				token: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,

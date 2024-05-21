@@ -11,8 +11,9 @@ import './featuredInfo.scss';
 import { useEffect, useState, useContext } from 'react';
 import { axiosI } from '../../config';
 import { AuthContext } from '../../context/authContext/authContext';
+import { CircularProgress } from '@material-ui/core';
 
-export default function FeaturedInfo({ data }) {
+export default function FeaturedInfo({ data, salesLoading, expensesLoading }) {
 	const [customersStats, setCustomersStats] = useState({});
 
 	const { user } = useContext(AuthContext);
@@ -93,34 +94,47 @@ export default function FeaturedInfo({ data }) {
 					<People className="icon" />
 				</div>
 
-				<p className="featuredMoney"> {customersStats?.totalCustomers} </p>
-
-				<div className="featuredSub">
-					<span
-						className={`featuredMoneyRate ${
-							customersStats?.currentMonthCount -
-								customersStats?.previousMonthCount >=
-							0
-								? 'positive'
-								: 'negative'
-						}`}>
-						<span>
-							{customersStats?.currentMonthCount -
-								customersStats?.previousMonthCount >=
-								0 && '+'}
-							{customersStats?.currentMonthCount -
-								customersStats?.previousMonthCount}
-						</span>{' '}
-						{customersStats?.currentMonthCount -
-							customersStats?.previousMonthCount >=
-						0 ? (
-							<ArrowUpward className="featuredIcon " />
-						) : (
-							<ArrowDownward className="featuredIcon " />
-						)}
-					</span>
-					<span className="lastMonth">Since last month</span>
-				</div>
+				{!salesLoading ? (
+					<>
+						<p className="featuredMoney"> {customersStats?.totalCustomers} </p>
+						<div className="featuredSub">
+							<span
+								className={`featuredMoneyRate ${
+									customersStats?.currentMonthCount -
+										customersStats?.previousMonthCount >=
+									0
+										? 'positive'
+										: 'negative'
+								}`}>
+								<span>
+									{customersStats?.currentMonthCount -
+										customersStats?.previousMonthCount >=
+										0 && '+'}
+									{customersStats?.currentMonthCount -
+										customersStats?.previousMonthCount}
+								</span>{' '}
+								{customersStats?.currentMonthCount -
+									customersStats?.previousMonthCount >=
+								0 ? (
+									<ArrowUpward className="featuredIcon " />
+								) : (
+									<ArrowDownward className="featuredIcon " />
+								)}
+							</span>
+							<span className="lastMonth">Since last month</span>
+						</div>
+					</>
+				) : (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '20px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
+					</div>
+				)}
 			</div>
 
 			<div
@@ -132,25 +146,40 @@ export default function FeaturedInfo({ data }) {
 					<MonetizationOn className="icon" />
 				</div>
 
-				<p className="featuredMoney"> {currentMonthSales},00 DA</p>
-
-				<div className="featuredSub ">
-					<span
-						className={`featuredMoneyRate ${
-							currentMonthSales - prevMonthSales >= 0 ? 'positive' : 'negative'
-						}`}>
-						<span>
-							{currentMonthSales - prevMonthSales >= 0 && '+'}
-							{currentMonthSales - prevMonthSales},00 DA
-						</span>{' '}
-						{currentMonthSales - prevMonthSales >= 0 ? (
-							<ArrowUpward className="featuredIcon " />
-						) : (
-							<ArrowDownward className="featuredIcon " />
-						)}
-					</span>
-					<span className="lastMonth">Since last month</span>
-				</div>
+				{salesLoading ? (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '20px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
+					</div>
+				) : (
+					<>
+						<p className="featuredMoney"> {currentMonthSales},00 DA</p>
+						<div className="featuredSub ">
+							<span
+								className={`featuredMoneyRate ${
+									currentMonthSales - prevMonthSales >= 0
+										? 'positive'
+										: 'negative'
+								}`}>
+								<span>
+									{currentMonthSales - prevMonthSales >= 0 && '+'}
+									{currentMonthSales - prevMonthSales},00 DA
+								</span>{' '}
+								{currentMonthSales - prevMonthSales >= 0 ? (
+									<ArrowUpward className="featuredIcon " />
+								) : (
+									<ArrowDownward className="featuredIcon " />
+								)}
+							</span>
+							<span className="lastMonth">Since last month</span>
+						</div>
+					</>
+				)}
 			</div>
 
 			<div
@@ -162,27 +191,40 @@ export default function FeaturedInfo({ data }) {
 					<MoneyOff className="icon" />
 				</div>
 
-				<p className="featuredMoney">{currentMonthExpense},00 DA</p>
-
-				<div className="featuredSub">
-					<span
-						className={`featuredMoneyRate ${
-							currentMonthExpense - prevMonthExpense >= 0
-								? 'positive'
-								: 'negative'
-						}`}>
-						<span>
-							{currentMonthExpense - prevMonthExpense >= 0 && '+'}
-							{currentMonthExpense - prevMonthExpense},00 DA
-						</span>{' '}
-						{currentMonthExpense - prevMonthExpense >= 0 ? (
-							<ArrowUpward className="featuredIcon " />
-						) : (
-							<ArrowDownward className="featuredIcon " />
-						)}
-					</span>
-					<span className="lastMonth">Since last month</span>
-				</div>
+				{expensesLoading ? (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '20px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
+					</div>
+				) : (
+					<>
+						<p className="featuredMoney">{currentMonthExpense},00 DA</p>
+						<div className="featuredSub">
+							<span
+								className={`featuredMoneyRate ${
+									currentMonthExpense - prevMonthExpense >= 0
+										? 'positive'
+										: 'negative'
+								}`}>
+								<span>
+									{currentMonthExpense - prevMonthExpense >= 0 && '+'}
+									{currentMonthExpense - prevMonthExpense},00 DA
+								</span>{' '}
+								{currentMonthExpense - prevMonthExpense >= 0 ? (
+									<ArrowUpward className="featuredIcon " />
+								) : (
+									<ArrowDownward className="featuredIcon " />
+								)}
+							</span>
+							<span className="lastMonth">Since last month</span>
+						</div>
+					</>
+				)}
 			</div>
 
 			<div
@@ -196,34 +238,47 @@ export default function FeaturedInfo({ data }) {
 					<LocalShipping className="icon" />
 				</div>
 
-				<p className="featuredMoney"> {currentMonthTransport},00 DA</p>
-
-				<div className="featuredSub">
-					<span
-						className={`featuredMoneyRate ${
-							currentMonthTransport - prevMonthTransport >= 0
-								? 'positive'
-								: 'negative'
-						}`}>
-						<span
-							className={`featuredMoneyRate ${
-								currentMonthTransport - prevMonthTransport >= 0
-									? 'positive'
-									: 'negative'
-							}`}>
-							<span>
-								{currentMonthTransport - prevMonthTransport >= 0 && '+'}
-								{currentMonthTransport - prevMonthTransport},00 DA
-							</span>{' '}
-							{currentMonthTransport - prevMonthTransport >= 0 ? (
-								<ArrowUpward className="featuredIcon " />
-							) : (
-								<ArrowDownward className="featuredIcon " />
-							)}
-						</span>
-					</span>
-					<span className="lastMonth">Since last month</span>
-				</div>
+				{salesLoading ? (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: '20px',
+						}}>
+						<CircularProgress style={{ color: 'lightGray' }} />
+					</div>
+				) : (
+					<>
+						<p className="featuredMoney"> {currentMonthTransport},00 DA</p>
+						<div className="featuredSub">
+							<span
+								className={`featuredMoneyRate ${
+									currentMonthTransport - prevMonthTransport >= 0
+										? 'positive'
+										: 'negative'
+								}`}>
+								<span
+									className={`featuredMoneyRate ${
+										currentMonthTransport - prevMonthTransport >= 0
+											? 'positive'
+											: 'negative'
+									}`}>
+									<span>
+										{currentMonthTransport - prevMonthTransport >= 0 && '+'}
+										{currentMonthTransport - prevMonthTransport},00 DA
+									</span>{' '}
+									{currentMonthTransport - prevMonthTransport >= 0 ? (
+										<ArrowUpward className="featuredIcon " />
+									) : (
+										<ArrowDownward className="featuredIcon " />
+									)}
+								</span>
+							</span>
+							<span className="lastMonth">Since last month</span>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

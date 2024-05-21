@@ -10,38 +10,12 @@
 		flex-direction: column;
 		gap: 20px;
 
-		.addToStoke {
-			margin-bottom: 20px;
-			.title {
-				font-size: 22px;
-				color: #333;
-				font-weight: 600;
-				margin-bottom: 12px;
-			}
-			.items {
-				display: flex;
-				align-items: flex-end;
-				gap: 20px;
-
-				.item {
-					display: flex;
-					flex-direction: column;
-					gap: 2px;
-
-					.label {
-						color: #333;
-						font-size: 14px;
-					}
-				}
-			}
-		}
-
 		.header {
 			display: flex;
 			justify-content: space-between;
 
-			.title {
-				font-size: 24px;
+			.products-title {
+				font-size: 20px;
 				font-weight: 600;
 				color: #333;
 			}
@@ -88,10 +62,6 @@
 					display: none !important;
 				}
 			}
-		}
-		.progressCenter {
-			margin: auto;
-			padding-top: 30px;
 		}
 	}
 }

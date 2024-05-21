@@ -11,7 +11,6 @@ export default function Topbar() {
 
 	const onLogout = () => {
 		dispatch(LOGOUT());
-		console.log('logout');
 	};
 
 	return (

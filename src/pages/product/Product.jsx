@@ -49,53 +49,55 @@ export default function Product() {
 
 	return (
 		<div className="product">
-			<h2 className="title">Update product</h2>
+			<div className="wrapper">
+				<h2 className="title">Update product</h2>
 
-			<form className="form">
-				<div className="group">
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						placeholder="Enter Name"
-						className="input"
-						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
+				<form className="form">
+					<div className="group">
+						<label htmlFor="name">Name</label>
+						<input
+							type="text"
+							placeholder="Enter Name"
+							className="input"
+							id="name"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="price">Price</label>
-					<input
-						type="number"
-						id="price"
-						className="input"
-						placeholder="Enter Price"
-						value={price}
-						onChange={(e) => setPrice(e.target.value)}
-					/>
-				</div>
+					<div className="group">
+						<label htmlFor="price">Price</label>
+						<input
+							type="number"
+							id="price"
+							className="input"
+							placeholder="Enter Price"
+							value={price}
+							onChange={(e) => setPrice(e.target.value)}
+						/>
+					</div>
 
-				<div className="group">
-					<label htmlFor="quantity">Quantity</label>
-					<input
-						type="number"
-						id="quantity"
-						className="input"
-						placeholder="Enter Quantity"
-						value={quantity}
-						onChange={(e) => setQuantity(e.target.value)}
-					/>
-				</div>
-			</form>
-			<Button
-				variant="contained"
-				size="small"
-				color="primary"
-				startIcon={<UpdateOutlined />}
-				onClick={handelSubmit}>
-				update product
-			</Button>
+					<div className="group">
+						<label htmlFor="quantity">Quantity</label>
+						<input
+							type="number"
+							id="quantity"
+							className="input"
+							placeholder="Enter Quantity"
+							value={quantity}
+							onChange={(e) => setQuantity(e.target.value)}
+						/>
+					</div>
+				</form>
+				<Button
+					variant="contained"
+					size="small"
+					color="primary"
+					startIcon={<UpdateOutlined />}
+					onClick={handelSubmit}>
+					update product
+				</Button>
+			</div>
 		</div>
 	);
 }

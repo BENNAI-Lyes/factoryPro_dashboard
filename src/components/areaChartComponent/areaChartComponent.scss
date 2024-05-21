@@ -1,4 +1,11 @@
 .areaChart {
 	flex: 3;
 	height: 350px;
+
+	.areaChartTitle {
+		margin-bottom: 15px;
+		font-size: 18px;
+		font-weight: 500;
+		color: #333;
+	}
 }

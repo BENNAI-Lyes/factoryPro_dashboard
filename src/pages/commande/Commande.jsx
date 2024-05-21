@@ -45,7 +45,7 @@ const Commande = () => {
 		<div className="order">
 			<div className="wrapper">
 				<div className="header">
-					<h2 className="title">Customer requirements</h2>
+					<h2 className="title">Customer Order Intake and Processing</h2>
 					<ReactToPrint
 						trigger={() => (
 							<Button

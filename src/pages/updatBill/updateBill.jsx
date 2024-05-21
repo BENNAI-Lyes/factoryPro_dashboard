@@ -125,14 +125,14 @@ const UpdateBill = () => {
 	const [returnedProducts, setReturnedProducts] = useState([]);
 
 	useEffect(() => {
-		if (bills.length === 0) return;
+		if (bills?.length === 0) return;
 		setReturnedProducts(bills[0].productsReturned);
 	}, [bills]);
 
 	const [moneyMin, setMoneyMin] = useState(0);
 
 	const handelReturnAutoCompleatChange = (event, newValue) => {
-		setReturnProduct(newValue.title);
+		setReturnProduct(newValue?.title);
 		setReturnProductValue(newValue);
 	};
 
@@ -195,6 +195,8 @@ const UpdateBill = () => {
 				credit: client.credit - billPayment,
 				_id: client._id,
 			});
+
+			setBillPayment(0);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
 			dispatch(ADD_TRANSACTION_FAILURE(error));
@@ -203,21 +205,25 @@ const UpdateBill = () => {
 
 	// UPDATE ORDER
 	const handelSaveClick = () => {
-		//save new bill
-		updateBill(dispatchBill, {
-			_id: billId,
-			productsReturned: returnedProducts.map((r) => ({
-				name: r.name,
-				quantity: r.quantity,
-				date,
-			})),
-		});
+		try {
+			//save new bill
+			updateBill(dispatchBill, {
+				_id: billId,
+				productsReturned: returnedProducts.map((r) => ({
+					name: r.name,
+					quantity: r.quantity,
+					date,
+				})),
+			});
 
-		//update client credit
-		updateClient(dispatchClient, {
-			credit: client.credit - moneyMin,
-			_id: bills[0]?.clientId,
-		});
+			//update client credit
+			updateClient(dispatchClient, {
+				credit: client.credit - moneyMin,
+				_id: bills[0]?.clientId,
+			});
+		} catch (error) {
+			console.log('ERROR_UPDATE_BILL', error);
+		}
 	};
 
 	const getProductPrice = (productName) => {
@@ -566,14 +572,21 @@ const UpdateBill = () => {
 				aria-describedby="simple-modal-description">
 				{/* body */}
 				<div style={modalStyle} className={classes.paper}>
-					<h2 id="simple-modal-title" style={{ marginBottom: '10px' }}>
+					<h2
+						id="simple-modal-title"
+						style={{
+							marginBottom: '12px',
+							fontSize: '18px',
+							color: '#333',
+							fontWeight: 600,
+						}}>
 						New Payment:
 					</h2>
 
 					<div id="simple-modal-description">
-						<form className="newTransactionForm" onSubmit={handelSubmit}>
+						<form className="newPaymentForm" onSubmit={handelSubmit}>
 							<div className="formGroup">
-								<label htmlFor="billVers" style={{ marginBottom: '15px' }}>
+								<label htmlFor="billVers" className="label">
 									Payment
 								</label>
 								<input
@@ -581,6 +594,7 @@ const UpdateBill = () => {
 									name="billVers"
 									id="billVers"
 									placeholder="Amount"
+									className="input"
 									value={billPayment}
 									onChange={(e) => setBillPayment(e.target.value)}
 								/>
@@ -592,7 +606,7 @@ const UpdateBill = () => {
 									color="primary"
 									variant="contained"
 									size="small">
-									Send
+									add
 								</Button>
 							</div>
 						</form>
